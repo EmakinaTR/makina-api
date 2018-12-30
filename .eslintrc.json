@@ -1,7 +1,14 @@
 {
-  "extends": ["standard", "standard-react"],
+  "extends": [
+    "standard",
+    "plugin:jest/recommended"
+  ],
   "parser": "typescript-eslint-parser",
   "plugins": [
-    "typescript"
-  ]
+    "typescript",
+    "jest"
+  ],
+  "env": {
+      "jest/globals": true
+  }
 }
