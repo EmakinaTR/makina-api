@@ -1,13 +1,4 @@
-import * as Koa from 'koa'
-import * as Router from 'koa-router'
+import 'reflect-metadata'
+import Application from './Application'
 
-const app = new Koa()
-const router = new Router()
-
-router.get('/*', async (ctx): Promise<void> => {
-  ctx.body = 'Hello World!'
-})
-
-app.use(router.routes())
-
-export const server = app.listen(3000)
+Application.start()
