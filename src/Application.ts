@@ -3,7 +3,11 @@ import { PlaceController, ProfileController } from './controllers'
 import Database from './data/Database'
 import { ConfigService } from './services'
 
-export class Application {
+/**
+ * Singleton class managing application lifecycle.
+ * @class
+ */
+class Application {
   private _server: any
 
   constructor () {
@@ -15,6 +19,9 @@ export class Application {
     })
   }
 
+  /**
+   * Starts the application.
+   */
   async start (): Promise<void> {
     try {
       await Database.connect()
@@ -25,6 +32,9 @@ export class Application {
     }
   }
 
+  /**
+   * Stops the application.
+   */
   async stop (): Promise<void> {
     try {
       await Database.disconnect()
@@ -34,6 +44,9 @@ export class Application {
     }
   }
 
+  /**
+   * Returns http server.
+   */
   getServer () {
     return this._server
   }

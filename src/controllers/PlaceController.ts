@@ -2,6 +2,10 @@ import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-control
 import { getRepository } from 'typeorm'
 import { Place } from '../data/entities'
 
+/**
+ * REST controller handling Place requests
+ * @class
+ */
 @Controller('/place')
 export class PlaceController {
   repository = getRepository(Place)

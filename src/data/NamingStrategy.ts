@@ -4,6 +4,10 @@
 import { DefaultNamingStrategy, NamingStrategyInterface } from 'typeorm' // eslint-disable-line no-unused-vars
 import { snakeCase } from 'typeorm/util/StringUtils'
 
+/**
+ * Strategy class for converting UpperCammelCase entity and field names to snake_case.
+ * @class
+ */
 export class NamingStrategy extends DefaultNamingStrategy
   implements NamingStrategyInterface {
   tableName (className: string, customName: string): string {

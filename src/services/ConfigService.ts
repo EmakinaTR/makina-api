@@ -1,6 +1,10 @@
 import * as fs from 'fs'
 import _ from 'lodash'
 
+/**
+ * Singleton service class that loads json configuration files.
+ * @class
+ */
 class ConfigService {
   private _config: any = {}
 
@@ -22,6 +26,10 @@ class ConfigService {
     }
   }
 
+  /**
+   * Reads a key from configuration.
+   * @param key - A field or a path.
+   */
   get (key: string): any {
     return _.get(this._config, key)
   }

@@ -1,6 +1,13 @@
 import { CreateDateColumn } from 'typeorm'
 import { BaseEntity } from './BaseEntity'
 
+/**
+ * Common ancestor for entities keeping track of created and updated dates.
+ *
+ * Created and updated dates are generated in database thus they are read-only for the api.
+ * @abstract
+ * @class
+ */
 export abstract class BaseEntry extends BaseEntity {
   @CreateDateColumn({ readonly: true })
   createdAt: Date | null = null

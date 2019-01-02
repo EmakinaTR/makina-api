@@ -2,6 +2,10 @@ import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-control
 import { getRepository } from 'typeorm'
 import { Profile } from '../data/entities'
 
+/**
+ * REST controller handling Profile requests
+ * @class
+ */
 @Controller('/profile')
 export class ProfileController {
   repository = getRepository(Profile)
