@@ -14,7 +14,9 @@ This is the repository for backend api of Makina project.
 # Getting started
 
 1- Clone this repository
-2- Run "npm install" to install dependencies
-3- Run "npm run-script build" to build typescript files
-4- Run "npm start" to start running the api project
 
+2- Run "npm install" to install dependencies
+
+3- Run "npm run-script build" to build typescript files
+
+4- Run "npm start" to start running the api project
