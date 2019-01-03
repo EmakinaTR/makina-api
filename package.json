@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "concurrently --kill-others \"tsc -w\" \"nodemon dist/index.js\"",
+    "start": "nodemon",
     "lint": "eslint \"src/**\"",
     "build": "tsc",
     "test": "jest --detectOpenHandles --forceExit"
@@ -19,15 +19,23 @@
   "license": "ISC",
   "dependencies": {
     "koa": "^2.6.2",
-    "koa-router": "^7.4.0"
+    "koa-bodyparser": "^4.2.1",
+    "koa-multer": "^1.0.2",
+    "koa-router": "^7.4.0",
+    "lodash": "^4.17.11",
+    "mysql2": "^1.6.4",
+    "reflect-metadata": "^0.1.12",
+    "routing-controllers": "^0.7.7",
+    "typeorm": "^0.2.9"
   },
   "devDependencies": {
     "@types/jest": "^23.3.10",
     "@types/koa": "^2.0.47",
+    "@types/koa-bodyparser": "^4.2.1",
     "@types/koa-router": "^7.0.35",
+    "@types/lodash": "^4.14.119",
     "@types/node": "^10.12.18",
     "@types/supertest": "^2.0.7",
-    "concurrently": "^4.1.0",
     "eslint": "^5.11.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-config-standard-react": "^7.0.2",
@@ -42,6 +50,7 @@
     "nodemon": "^1.18.9",
     "supertest": "^3.3.0",
     "ts-jest": "^23.10.5",
+    "ts-node": "^7.0.1",
     "typescript": "^3.1.1",
     "typescript-eslint-parser": "^21.0.2"
   }
