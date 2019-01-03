@@ -1,19 +1,21 @@
 import request from 'supertest'
 import Application from '../Application'
+jest.mock('../data/Database')
 
 describe('server', () => {
   beforeAll(async () => {
-    await Application.start()
+
   })
 
   afterAll(async () => {
-    await Application.stop()
+
   })
 
-  test('should respond as expected', async () => {
+  test('should start and stop as expected', async () => {
+    await Application.start()
     const server = Application.getServer()
     const response = await request(server).get('/')
-    console.log(response)
-    expect(response.status).toEqual(200)
+    expect(response.status).toEqual(404)
+    await Application.stop()
   })
 })

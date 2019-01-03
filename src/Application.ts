@@ -10,15 +10,6 @@ import { ConfigService } from './services'
 class Application {
   private _server: any
 
-  constructor () {
-    this._server = createKoaServer({
-      controllers: [
-        PlaceController,
-        ProfileController
-      ]
-    })
-  }
-
   /**
    * Starts the application.
    */
@@ -26,7 +17,12 @@ class Application {
     try {
       await Database.connect()
       const port = ConfigService.get('api.port')
-      this._server.listen(port)
+      this._server = createKoaServer({
+        controllers: [
+          PlaceController,
+          ProfileController
+        ]
+      }).listen(port)
     } catch (e) {
       console.error('Failed to start the application', e)
     }
