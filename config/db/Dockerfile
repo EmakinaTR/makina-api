@@ -1,0 +1,18 @@
+FROM mysql/mysql-server:latest
+
+# Build arguments
+ARG ROOT_PASSWORD
+ARG DATABASE
+ARG USER
+ARG PASSWORD
+ARG DB_PORT
+
+ENV MYSQL_ROOT_PASSWORD $ROOT_PASSWORD
+ENV MYSQL_DATABASE $DATABASE
+ENV MYSQL_USER $USER
+ENV MYSQL_PASSWORD $PASSWORD
+
+# Update default authentication method
+ADD setup.sql /docker-entrypoint-initdb.d
+
+EXPOSE $PORT

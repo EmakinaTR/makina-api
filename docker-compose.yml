@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  db:
+    container_name: makina/db
+    build: 
+      context: ./config/db
+      args:
+        - ROOT_PASSWORD
+        - DATABASE
+        - USER
+        - PASSWORD
+        - DB_PORT
+    # TODO read port values from config.json
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+  makina-api:
+    container_name: makina/api
+    build:
+      context: .
+      args:
+        - API_PORT
+    # TODO read port values from config.json
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_HOST=db
+    networks:
+      - app-network
+
+networks:
+  app-network:
