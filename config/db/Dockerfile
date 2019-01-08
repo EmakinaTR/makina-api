@@ -1,18 +1,8 @@
-FROM mysql/mysql-server:latest
+FROM mysql/mysql-server:8.0
 
-# Build arguments
-ARG ROOT_PASSWORD
-ARG DATABASE
-ARG USER
-ARG PASSWORD
-ARG DB_PORT
+ARG DB_USR
+ARG DB_USR_PWD
 
-ENV MYSQL_ROOT_PASSWORD $ROOT_PASSWORD
-ENV MYSQL_DATABASE $DATABASE
-ENV MYSQL_USER $USER
-ENV MYSQL_PASSWORD $PASSWORD
-
-# Update default authentication method
-ADD setup.sql /docker-entrypoint-initdb.d
-
-EXPOSE $PORT
+# Create initial sql to update default authentication method
+# setup.sql is added to .gitignore since it will include sensitive data
+RUN echo "ALTER USER $DB_USR IDENTIFIED WITH mysql_native_password BY '$DB_USR_PWD';" > /docker-entrypoint-initdb.d/setup.sql

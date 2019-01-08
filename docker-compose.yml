@@ -2,35 +2,32 @@ version: '3.3'
 
 services:
   db:
-    container_name: makina/db
-    build: 
+    container_name: makina-db
+    build:
       context: ./config/db
       args:
-        - ROOT_PASSWORD
-        - DATABASE
-        - USER
-        - PASSWORD
-        - DB_PORT
-    # TODO read port values from config.json
+        - DB_USR=${DB_USR}
+        - DB_USR_PWD=${DB_USR_PWD}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_USR_PWD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USR}
+      - MYSQL_PASSWORD=${DB_USR_PWD}
     ports:
-      - "3306:3306"
+      - "${DB_PORT}:${DB_PORT}"
     networks:
-      - app-network
-  makina-api:
-    container_name: makina/api
-    build:
-      context: .
-      args:
-        - API_PORT
-    # TODO read port values from config.json
-    ports:
-      - "3000:3000"
+      - makina-network
+  api:
+    container_name: makina-api
+    build: .
     depends_on:
       - db
     environment:
-      - DATABASE_HOST=db
+      - DB_HOST=db
+    ports:
+      - "${API_PORT}:${API_PORT}"
     networks:
-      - app-network
+      - makina-network
 
 networks:
-  app-network:
+  makina-network:
