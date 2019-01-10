@@ -1,9 +1,9 @@
 {
   "database": {
-    "host": "db",
+    "host": "localhost",
     "port": 3306,
     "schema": "makina",
-    "username": "api",
+    "username": "root",
     "password": "elenor",
     "logging": true
   }
