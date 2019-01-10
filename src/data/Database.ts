@@ -26,7 +26,18 @@ class Database {
       migrationsRun: true,
       multipleStatements: true
     })
-    await createConnection(options)
+
+    try {
+      await createConnection(options)
+    } catch(e) {
+      console.error(e);
+      this.reconnectWithDelay(5000)
+    }
+  }
+
+  async reconnectWithDelay (delay: number): Promise<void> {
+    await new Promise(resolve => setTimeout(resolve, delay));
+    await this.connect()
   }
 
   /**
