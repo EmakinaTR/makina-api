@@ -23,6 +23,8 @@ This is the repository for backend api of Makina project.
 
 # Steps to run on Docker
 
-1- Rename `sample.env` to `.env`
+1- Rename `sample.env` to `.env` e.g. `cp sample.env .env`
 
-2- Run `docker-compose up -d`
+2- Set values on `.env`
+
+3- Run `docker-compose up -d`
