@@ -20,6 +20,12 @@ async function renameExistingEnvFile () {
 
 async function rollbackChanges () {
   try {
+    // Delete test file
+    await fsPromises.unlink(envPath)
+  } catch (e) {
+    // Not exist
+  }
+  try {
     await fsPromises.access(envBakPath, fs.constants.F_OK)
     // Exists, move
     await fsPromises.rename(envBakPath, envPath)
