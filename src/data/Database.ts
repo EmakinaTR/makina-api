@@ -29,14 +29,23 @@ class Database {
 
     try {
       await createConnection(options)
-    } catch(e) {
-      console.error(e);
-      this.reconnectWithDelay(5000)
+      console.info('Connected to the DB successfully.')
+    } catch (err) {
+      console.error(err)
+      if (config.reconnect) {
+        console.info('Will reconnect to the DB after', config.reconnectDelay, 'ms later.')
+        this.reconnectWithDelay(config.reconnectDelay)
+      } else {
+        throw err
+      }
     }
   }
 
+  /**
+   * Reconnects to database after a delay.
+   */
   async reconnectWithDelay (delay: number): Promise<void> {
-    await new Promise(resolve => setTimeout(resolve, delay));
+    await new Promise(resolve => setTimeout(resolve, delay))
     await this.connect()
   }
 
