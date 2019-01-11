@@ -3,6 +3,8 @@
     "port": 3000
   },
   "database": {
-    "logging": false
+    "logging": false,
+    "reconnect": true,
+    "reconnectDelay": 5000
   }
 }
