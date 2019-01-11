@@ -29,7 +29,6 @@ class Database {
 
     try {
       await createConnection(options)
-      console.info('Connected to the DB successfully.')
     } catch (err) {
       console.error(err)
       if (config.reconnect) {
