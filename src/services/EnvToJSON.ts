@@ -1,6 +1,13 @@
-import * as dotenv from "dotenv"
+import * as dotenv from 'dotenv'
 
-export default function (): object  {
+/**
+ * Reads .env file if exists and returns file's content as an object.
+ */
+export default function (): object {
+  /**
+   * If given string is composed of numbers, than converts it to number type.
+   * @param val - Any string
+   */
   function converToNumberIfItIsNumber (val: string): any {
     return /^\d*$/.test(val) ? Number(val) : val
   }
