@@ -20,3 +20,9 @@ This is the repository for backend api of Makina project.
 3- Run "npm run-script build" to build typescript files
 
 4- Run "npm start" to start running the api project
+
+# Steps to run on Docker
+
+1- Rename `sample.env` to `.env`
+
+2- Run `docker-compose up -d`
