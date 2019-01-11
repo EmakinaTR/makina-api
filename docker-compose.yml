@@ -26,6 +26,7 @@ services:
       - db
     environment:
       - DATABASE_HOST=db
+      - DATABASE_PORT=${DATABASE_PORT}
     ports:
       - "${API_PORT}:${API_PORT}"
     networks:
