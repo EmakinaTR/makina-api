@@ -1,7 +1,8 @@
 import { createKoaServer } from 'routing-controllers'
 import { PlaceController, ProfileController } from './controllers'
 import Database from './data/Database'
-import { ConfigService } from './services'
+import { ConfigService, OpenApiService  } from './services'
+
 
 /**
  * Singleton class managing application lifecycle.
