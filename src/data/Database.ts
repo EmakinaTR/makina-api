@@ -1,21 +1,28 @@
 import _ from 'lodash'
-import { createConnection, getConnection, getConnectionOptions } from 'typeorm'
+import { createConnection, getConnection } from 'typeorm'
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions' // eslint-disable-line no-unused-vars
+import retry from 'async-retry'
 import { NamingStrategy } from './NamingStrategy'
 import { ConfigService } from '../services'
-import retry = require('async-retry');
+import * as entities from './entities'
+import * as migrations from './migrations'
+
+const DEFAULT_CONNECTION_ERROR_MESSAGE = 'Failed to connect to the database.'
 
 /**
  * Singleton class managing database connections.
  * @class
  */
 class Database {
+  private _connected: boolean = false
+
   /**
    * Connects to configured database.
    */
   async connect (): Promise<void> {
     const config = ConfigService.get('database')
-    const options = await getConnectionOptions()
-    _.merge(options, {
+    const options: MysqlConnectionOptions = {
+      type: 'mysql',
       name: 'default',
       host: process.env.DATABASE_HOST,
       port: Number(process.env.DATABASE_PORT),
@@ -25,22 +32,32 @@ class Database {
       logging: config.logging,
       namingStrategy: new NamingStrategy(),
       migrationsRun: true,
-      multipleStatements: true
-    })
+      multipleStatements: true,
+      synchronize: false,
+      entities: _.values(entities),
+      migrations: _.values(migrations)
+    }
 
-    await retry(async () => {
+    await retry(async (bail, retryCount) => {
       // if throws 'ECONNREFUSED', it retries
       try {
         await createConnection(options)
+        this._connected = true
       } catch (e) {
         if (e.code === 'ECONNREFUSED') {
+          console.warn(`${DEFAULT_CONNECTION_ERROR_MESSAGE} Retry #${retryCount}.`)
           throw e
         }
         console.error(e)
+        bail(new Error(DEFAULT_CONNECTION_ERROR_MESSAGE))
       }
     }, {
       retries: config.retryCount
     })
+
+    if (!this._connected) {
+      throw new Error(DEFAULT_CONNECTION_ERROR_MESSAGE)
+    }
   }
 
   /**
@@ -52,6 +69,10 @@ class Database {
       return
     }
     await connection.close()
+  }
+
+  isConnected (): boolean {
+    return this._connected
   }
 }
 
