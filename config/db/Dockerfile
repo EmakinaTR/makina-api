@@ -4,5 +4,5 @@ ARG DATABASE_USERNAME
 ARG DATABASE_PASSWORD
 
 # Create initial sql to update default authentication method
-# setup.sql is added to .gitignore since it will include sensitive data
-RUN echo "ALTER USER $DATABASE_USERNAME IDENTIFIED WITH mysql_native_password BY '$DATABASE_PASSWORD';" > /docker-entrypoint-initdb.d/setup.sql
+# authentication.sql is added to .gitignore since it will include sensitive data
+RUN echo "ALTER USER $DATABASE_USERNAME IDENTIFIED WITH mysql_native_password BY '$DATABASE_PASSWORD';" > /docker-entrypoint-initdb.d/authentication.sql

@@ -3,6 +3,6 @@
   },
   "database": {
     "logging": false,
-    "reconnectDelay": 5000
+    "retryCount": 20
   }
 }

@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { createConnection, getConnection, getConnectionOptions } from 'typeorm'
 import { NamingStrategy } from './NamingStrategy'
 import { ConfigService } from '../services'
+import retry = require('async-retry');
 
 /**
  * Singleton class managing database connections.
@@ -27,21 +28,19 @@ class Database {
       multipleStatements: true
     })
 
-    try {
-      await createConnection(options)
-    } catch (err) {
-      console.error(err)
-      console.info('Will reconnect to the DB after', config.reconnectDelay, 'ms later.')
-      this.reconnectWithDelay(config.reconnectDelay)
-    }
-  }
-
-  /**
-   * Reconnects to database after a delay.
-   */
-  async reconnectWithDelay (delay: number): Promise<void> {
-    await new Promise(resolve => setTimeout(resolve, delay))
-    await this.connect()
+    await retry(async () => {
+      // if throws 'ECONNREFUSED', it retries
+      try {
+        await createConnection(options)
+      } catch (e) {
+        if (e.code === 'ECONNREFUSED') {
+          throw e
+        }
+        console.error(e)
+      }
+    }, {
+      retries: config.retryCount
+    })
   }
 
   /**
