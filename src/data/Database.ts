@@ -16,11 +16,11 @@ class Database {
     const options = await getConnectionOptions()
     _.merge(options, {
       name: 'default',
-      host: config.host,
-      port: config.port,
-      username: config.username,
-      password: config.password,
-      database: config.schema,
+      host: process.env.DATABASE_HOST,
+      port: Number(process.env.DATABASE_PORT),
+      username: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_SCHEMA,
       logging: config.logging,
       namingStrategy: new NamingStrategy(),
       migrationsRun: true,
@@ -31,12 +31,8 @@ class Database {
       await createConnection(options)
     } catch (err) {
       console.error(err)
-      if (config.reconnect) {
-        console.info('Will reconnect to the DB after', config.reconnectDelay, 'ms later.')
-        this.reconnectWithDelay(config.reconnectDelay)
-      } else {
-        throw err
-      }
+      console.info('Will reconnect to the DB after', config.reconnectDelay, 'ms later.')
+      this.reconnectWithDelay(config.reconnectDelay)
     }
   }
 

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "nodemon",
     "lint": "eslint \"src/**\"",
-    "build": "tsc",
+    "build": "tsc && cpx \"src/**/*.sql\" dist",
     "test": "jest --detectOpenHandles --forceExit"
   },
   "repository": {
@@ -30,6 +30,7 @@
     "dotenv": "^6.2.0"
   },
   "devDependencies": {
+    "@types/dotenv": "^6.1.0",
     "@types/jest": "^23.3.10",
     "@types/koa": "^2.0.47",
     "@types/koa-bodyparser": "^4.2.1",
@@ -37,7 +38,7 @@
     "@types/lodash": "^4.14.119",
     "@types/node": "^10.12.18",
     "@types/supertest": "^2.0.7",
-    "@types/dotenv": "^6.1.0",
+    "cpx": "^1.5.0",
     "eslint": "^5.11.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-config-standard-react": "^7.0.2",

@@ -16,6 +16,8 @@ services:
       - MYSQL_PASSWORD=${DATABASE_PASSWORD}
     ports:
       - "${DATABASE_PORT}:${DATABASE_PORT}"
+    volumes:
+      - db:/var/lib/mysql
     networks:
       - makina-network
   api:
@@ -26,7 +28,6 @@ services:
       - db
     environment:
       - DATABASE_HOST=db
-      - DATABASE_PORT=${DATABASE_PORT}
     ports:
       - "${API_PORT}:${API_PORT}"
     networks:
@@ -34,3 +35,6 @@ services:
 
 networks:
   makina-network:
+
+volumes:
+  db:

@@ -3,13 +3,13 @@
   "synchronize": false,
   "logging": false,
   "entities": [
-     "src/data/entities/**/*.ts"
+     "dist/data/entities/**/*.js"
   ],
   "migrations": [
-     "src/data/migrations/**/*.ts"
+     "dist/data/migrations/**/*.js"
   ],
   "subscribers": [
-     "src/data/subscribers/**/*.ts"
+     "dist/data/subscribers/**/*.js"
   ],
   "cli": {
      "entitiesDir": "src/data/entities",
