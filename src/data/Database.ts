@@ -52,12 +52,9 @@ class Database {
         bail(new Error(DEFAULT_CONNECTION_ERROR_MESSAGE))
       }
     }, {
-      retries: config.retryCount
+      retries: config.connectionRetryCount,
+      minTimeout: config.connectionRetryDelay
     })
-
-    if (!this._connected) {
-      throw new Error(DEFAULT_CONNECTION_ERROR_MESSAGE)
-    }
   }
 
   /**
