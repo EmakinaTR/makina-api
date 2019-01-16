@@ -10,7 +10,6 @@ RUN npm install --only=production
 # Copy app sources
 COPY dist dist
 COPY .env .env
-COPY ormconfig.json ormconfig.json
 COPY config config
 
 CMD node dist/index.js
