@@ -1,0 +1,8 @@
+{
+  "api": {
+  },
+  "database": {
+    "connectionRetryCount": 3,
+    "connectionRetryDelay": 1
+  }
+}
