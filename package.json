@@ -16,7 +16,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "apache-2.0",
   "dependencies": {
     "async-retry": "^1.2.3",
     "dotenv": "^6.2.0",
