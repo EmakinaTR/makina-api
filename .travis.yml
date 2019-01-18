@@ -1,13 +1,39 @@
 language: node_js
+services:
+  - docker
 node_js:
   - 10
-cache: npm
+cache:
+  directories:
+    - node_modules
+env:
+  - DOCKER_IMAGE="emakinatr/makina-api"
 script:
+  # Build and test
   - npm run lint
   - npm run build
   - npm test
-after_script:
+  # Coverage
+  - npm install coveralls --no-save
+  - coveralls < ./coverage/lcov.info
+  # Deploy
   - |
-    # Upload coverage to coveralls
-    npm install --save-dev coveralls
-    coveralls < ./coverage/lcov.info
+    if [[ $TRAVIS_PULL_REQUEST == "false" && ($TRAVIS_BRANCH == "master" || $TRAVIS_BRANCH == "develop") ]]; then
+      VERSION_TYPE=patch && [[ $TRAVIS_BRANCH == "master" ]] && VERSION_TYPE=minor
+      echo $VERSION_TYPE
+      VERSION=`npm version $VERSION_TYPE -m $'Release v%s\n\n[skip ci]'`
+      echo $VERSION
+      DOCKER_TAG=develop && [[ $TRAVIS_BRANCH == "master" ]] && DOCKER_TAG=latest
+      echo $DOCKER_TAG
+      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      docker pull $DOCKER_IMAGE:$DOCKER_TAG
+      docker build -t $DOCKER_IMAGE:$VERSION -t $DOCKER_IMAGE:$DOCKER_TAG --cache-from $DOCKER_IMAGE:$DOCKER_TAG .
+      docker push $DOCKER_IMAGE:$VERSION
+      docker push $DOCKER_IMAGE:$DOCKER_TAG
+      git remote rm origin
+      git remote add origin https://${GITHUB_ACCESS_TOKEN}@github.com/EmakinaTR/makina-api.git
+      git push origin HEAD:$TRAVIS_BRANCH
+      git push origin --tags
+    else
+      echo "Skipping deploy for $TRAVIS_BRANCH."
+    fi
