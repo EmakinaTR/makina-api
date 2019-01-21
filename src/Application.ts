@@ -2,6 +2,8 @@ import { createKoaServer } from 'routing-controllers'
 import { PlaceController, ProfileController } from './controllers'
 import Database from './data/Database'
 import * as dotenv from 'dotenv'
+import { ApolloServer } from 'apollo-server-koa'
+import { typeDefs, Resolvers } from './gql'
 
 /**
  * Singleton class managing application lifecycle.
@@ -18,12 +20,17 @@ class Application {
       dotenv.config()
       await Database.connect()
       const port = process.env.API_PORT
-      this._server = createKoaServer({
+      const app = createKoaServer({
         controllers: [
           PlaceController,
           ProfileController
         ]
-      }).listen(port)
+      })
+
+      const gqlServer = new ApolloServer({ typeDefs, resolvers })
+      gqlServer.applyMiddleware({ app })
+
+      this._server = app.listen(port)
     } catch (e) {
       console.error('Failed to start the application', e)
     }

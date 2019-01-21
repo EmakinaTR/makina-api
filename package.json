@@ -18,8 +18,10 @@
   "author": "",
   "license": "apache-2.0",
   "dependencies": {
+    "apollo-server-koa": "^2.3.1",
     "async-retry": "^1.2.3",
     "dotenv": "^6.2.0",
+    "graphql": "^14.1.1",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
     "koa-multer": "^1.0.2",
@@ -33,6 +35,7 @@
   "devDependencies": {
     "@types/async-retry": "^1.2.1",
     "@types/dotenv": "^6.1.0",
+    "@types/graphql": "^14.0.5",
     "@types/jest": "^23.3.10",
     "@types/koa": "^2.0.47",
     "@types/koa-bodyparser": "^4.2.1",
