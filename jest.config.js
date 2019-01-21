@@ -31,7 +31,8 @@ module.exports = {
     '/node_modules/',
     '/src/data/entities/',
     '/src/data/migrations/',
-    '/src/data/NamingStrategy.ts'
+    '/src/data/NamingStrategy.ts',
+    '.history'
   ],
 
   // A list of reporter names that Jest uses when writing coverage reports
@@ -144,9 +145,10 @@ module.exports = {
   ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/.history/'
+  ],
 
   // The regexp pattern Jest uses to detect test files
   // testRegex: "",
