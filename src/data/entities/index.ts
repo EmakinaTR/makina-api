@@ -1,4 +1,5 @@
 export * from './BaseEntity'
 export * from './BaseEntry'
-export * from './Profile'
+export * from './JobAssessment'
+export * from './JobAssessmentSection'
 export * from './Place'
