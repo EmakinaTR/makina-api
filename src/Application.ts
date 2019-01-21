@@ -3,7 +3,7 @@ import { PlaceController, ProfileController } from './controllers'
 import Database from './data/Database'
 import * as dotenv from 'dotenv'
 import { ApolloServer } from 'apollo-server-koa'
-import { typeDefs, Resolvers } from './gql'
+import { typeDefs, resolvers } from './gql'
 
 /**
  * Singleton class managing application lifecycle.
