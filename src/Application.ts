@@ -3,7 +3,7 @@ import { PlaceController, ProfileController } from './controllers'
 import Database from './data/Database'
 import * as dotenv from 'dotenv'
 import { ApolloServer } from 'apollo-server-koa'
-import { typeDefs, resolvers } from './gql'
+import { schema } from './gql'
 
 /**
  * Singleton class managing application lifecycle.
@@ -27,7 +27,7 @@ class Application {
         ]
       })
 
-      const gqlServer = new ApolloServer({ typeDefs, resolvers })
+      const gqlServer = new ApolloServer({ schema })
       gqlServer.applyMiddleware({ app })
 
       this._server = app.listen(port)
