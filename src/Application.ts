@@ -1,7 +1,7 @@
 import { createKoaServer } from 'routing-controllers'
 import { PlaceController, ProfileController } from './controllers'
 import Database from './data/Database'
-import { ConfigService } from './services'
+import * as dotenv from 'dotenv'
 
 /**
  * Singleton class managing application lifecycle.
@@ -15,8 +15,9 @@ class Application {
    */
   async start (): Promise<void> {
     try {
+      dotenv.config()
       await Database.connect()
-      const port = ConfigService.get('api.port')
+      const port = process.env.API_PORT
       this._server = createKoaServer({
         controllers: [
           PlaceController,
