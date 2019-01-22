@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, Column, ManyToOne, OneToMany, OneToOne, JoinColumn } from 'typeorm'
 import { BaseEntry } from './BaseEntry'
 import { Place } from './Place'
 import { OrganizationRole } from './OrganizationRole'
@@ -20,6 +20,10 @@ export class Organization extends BaseEntry {
 
   @Column({ type: 'varchar', length: 200 })
   phone: string | null = null
+
+  @OneToOne(type => Organization, organization => organization.parentOrganization)
+  @JoinColumn()
+  parentOrganization: Organization | undefined;
 
   @ManyToOne(type => Place, place => place.organization)
   place: Place | undefined

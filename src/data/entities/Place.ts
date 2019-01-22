@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany } from 'typeorm'
+import { Entity, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm'
 import { BaseEntry } from './BaseEntry'
 import { Profile } from './Profile'
 import { Organization } from './Organization'
@@ -14,6 +14,10 @@ export class Place extends BaseEntry {
 
   @Column({ type: 'int' })
   type: 'country' | 'state' | 'region' | 'city' | 'district' = 'city'
+
+  @OneToOne(type => Place, place => place.parentPlace)
+  @JoinColumn()
+  parentPlace: Place | undefined;
 
   @OneToMany(type => Profile, profile => profile.place)
   profile: Profile[] | undefined;

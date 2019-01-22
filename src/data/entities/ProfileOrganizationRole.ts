@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, CreateDateColumn } from 'typeorm'
+import { Entity, ManyToOne, CreateDateColumn, JoinColumn, OneToOne } from 'typeorm'
 import { BaseEntry } from './BaseEntry'
 import { Profile } from './Profile'
 import { OrganizationRole } from './OrganizationRole'
@@ -14,6 +14,10 @@ export class ProfileOrganizationRole extends BaseEntry {
 
   @CreateDateColumn()
   leftAt: Date | undefined
+
+  @OneToOne(type => ProfileOrganizationRole, profileOrganizationRole => profileOrganizationRole.parentProfileOrganizationRole)
+  @JoinColumn()
+  parentProfileOrganizationRole: ProfileOrganizationRole | undefined;
 
   @ManyToOne(type => OrganizationRole, organizationRole => organizationRole.profileOrganizationRole)
   organizationRole: OrganizationRole | undefined

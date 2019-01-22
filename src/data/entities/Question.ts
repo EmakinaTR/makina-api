@@ -1,9 +1,9 @@
-import { Entity, Column, ManyToOne } from 'typeorm'
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm'
 import { BaseEntry } from './BaseEntry'
-import { JobAssessmentSection } from './JobAssessmentSection'
+import { Group } from './Group'
 
 @Entity()
-export class JobAssessmentQuestion extends BaseEntry {
+export class Question extends BaseEntry {
   @Column({ type: 'varchar', length: 200 })
   title: string | null = null
 
@@ -19,6 +19,7 @@ export class JobAssessmentQuestion extends BaseEntry {
   @Column({ type: 'int' })
   type: 'text' | 'select' | 'code' = 'text'
 
-  @ManyToOne(type => JobAssessmentSection, jobAssessmentSection => jobAssessmentSection.jobAssessmentQuestion)
-  jobAssessmentSection: JobAssessmentSection | undefined
+  @ManyToMany(type => Group)
+  @JoinTable()
+  group: Group[] | undefined
 }

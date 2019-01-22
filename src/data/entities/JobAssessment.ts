@@ -16,6 +16,9 @@ export class JobAssessment extends BaseEntry {
   @Column({ type: 'text' })
   content: string | undefined
 
+  @Column({ type: 'int' })
+  state: 'draft' | 'published' = 'draft'
+
   @OneToMany(type => JobAssessmentSection, jobAssessmentSection => jobAssessmentSection.jobAssessment)
   jobAssessmentSection: JobAssessmentSection[] | undefined
 

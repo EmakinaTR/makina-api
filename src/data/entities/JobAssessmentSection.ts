@@ -1,8 +1,8 @@
 // tslint:disable-next-line:quotemark
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, Column, ManyToMany, JoinTable, ManyToOne } from 'typeorm'
 import { BaseEntry } from './BaseEntry'
+import { Question } from './Question'
 import { JobAssessment } from './JobAssessment'
-import { JobAssessmentQuestion } from './JobAssessmentQuestion'
 
 @Entity()
 export class JobAssessmentSection extends BaseEntry {
@@ -15,6 +15,7 @@ export class JobAssessmentSection extends BaseEntry {
   @ManyToOne(type => JobAssessment, jobAssessment => jobAssessment.jobAssessmentSection)
   jobAssessment: JobAssessment | undefined
 
-  @OneToMany(type => JobAssessmentQuestion, jobAssessmentQuestion => jobAssessmentQuestion.jobAssessmentSection)
-  jobAssessmentQuestion: JobAssessmentQuestion[] | undefined
+  @ManyToMany(type => Question)
+  @JoinTable()
+  question: Question[] | undefined
 }
