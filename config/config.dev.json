@@ -1,10 +1,10 @@
 {
   "database": {
-    "host": "EMATR-NKDLP2",
+    "host": "",
     "port": 3306,
-    "username": "admin",
-    "password": "gscimbomgs1905",
-    "database": "makina_local",
+    "username": "",
+    "password": "",
+    "database": "",
     "logging": true
   }
 }
