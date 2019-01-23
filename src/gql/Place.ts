@@ -9,6 +9,10 @@ export const typeDefs = `
     city
     district
   }
+  input PlaceInput {
+    name: String
+    type: PlaceType
+  }
   type Place {
     id: ID
     name: String
@@ -20,11 +24,12 @@ export const typeDefs = `
     places: [Place]
   }
   extend type Mutation {
-    createPlace(name: String!, type: PlaceType): Place
-    updatePlace(id: ID!, name: String, type: PlaceType): Place
+    createPlace(input: PlaceInput): Place
+    updatePlace(id: ID!, input: PlaceInput): Place
     deletePlace(id: ID!): DBResponse
   }
 `
+
 export const resolvers = {
   Query: {
     place: (_: any, { id }: any) => {
@@ -35,20 +40,20 @@ export const resolvers = {
     }
   },
   Mutation: {
-    createPlace: (_: any, { name, type }: any) => {
+    createPlace: (_: any, { input }: any) => {
+      const repository = getRepository(Place)
       const place = new Place()
-      place.name = name
-      place.type = type || place.type
-      return getRepository(Place).save(place)
+      repository.merge(place, input)
+      return repository.save(place)
     },
-    updatePlace: async (_: any, { id, name, type }: any) => {
-      const place = await getRepository(Place).findOne(id)
+    updatePlace: async (_: any, { id, input }: any) => {
+      const repository = getRepository(Place)
+      const place = await repository.findOne(id)
       if (!place) {
         throw new Error(`Couldn’t find place with id ${id}`)
       }
-      place.name = name || place.name
-      place.type = type || place.type
-      return getRepository(Place).save(place)
+      repository.merge(place, input)
+      return repository.save(place)
     },
     deletePlace: (_: any, { id }: any) => {
       return getRepository(Place).delete(id)
