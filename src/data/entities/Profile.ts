@@ -26,9 +26,6 @@ export class Profile extends BaseEntry {
   @Column({ type: 'varchar' })
   phone: string | null = null
 
-  @Column({ type: 'bigint' })
-  placeId: number | null = null
-
-  @ManyToOne(type => Place)
-  place: Place | null = null
+  @ManyToOne(type => Place, place => place.profile)
+  place: Place | undefined;
 }

@@ -8,6 +8,10 @@ import {
   typeDefs as Place,
   resolvers as placeResolvers
 } from './Place'
+import {
+  typeDefs as Profile,
+  resolvers as profileResolvers
+} from './Profile'
 
 const Base = `
   type Query {
@@ -20,6 +24,6 @@ const Base = `
 const resolvers = {}
 
 export const schema = makeExecutableSchema({
-  typeDefs: [ Base, Common, Place ],
-  resolvers: merge(resolvers, commonResolvers, placeResolvers)
+  typeDefs: [ Base, Common, Place, Profile ],
+  resolvers: merge(resolvers, commonResolvers, placeResolvers, profileResolvers)
 })
