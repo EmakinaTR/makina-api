@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"query\": \"mutation { createPlace(name: \\\"Ardahan\\\", type: city) { name type } }\" }"
+							"raw": "{ \"query\": \"mutation { createPlace(input: { name: \\\"İzmir\\\", type: city } ) { id name type } }\" }"
 						},
 						"url": {
 							"raw": "localhost:3000/graphql",
@@ -51,7 +51,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"query\": \"mutation { updatePlace(id: 1, name: \\\"İzmir\\\", type: city) { name type } }\" }\n"
+							"raw": "{ \"query\": \"mutation { updatePlace(id: 1, input: { name: \\\"Ankara\\\", type: city }) { id name type } }\" }\n"
 						},
 						"url": {
 							"raw": "localhost:3000/graphql",
@@ -80,7 +80,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"query\": \"{ place(id: 1) { name type } }\" }"
+							"raw": "{ \"query\": \"{ place(id: 1) { id name type } }\" }"
 						},
 						"url": {
 							"raw": "localhost:3000/graphql",
@@ -138,7 +138,157 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"query\": \"mutation { deletePlace(id: 5) { raw { affectedRows } } }\" }"
+							"raw": "{ \"query\": \"mutation { deletePlace(id: 1) { raw { affectedRows } } }\" }"
+						},
+						"url": {
+							"raw": "localhost:3000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Profile: Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"query\": \"mutation { createProfile(input: { email: \\\"a@a.com\\\", birthDate: \\\"1988-06-08\\\" } ) { email birthDate address place { name } } }\" }"
+						},
+						"url": {
+							"raw": "localhost:3000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile: Update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"query\": \"mutation { updateProfile(id: 1, input: { place: 1 } ) { email address place { name } } }\" }"
+						},
+						"url": {
+							"raw": "localhost:3000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile: Get one",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"query\": \"{ profile(id: 1) { id email address place { id name type } } }\" }"
+						},
+						"url": {
+							"raw": "localhost:3000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile: Get all",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"query\": \"{ profiles { id email place { name } } }\" }"
+						},
+						"url": {
+							"raw": "localhost:3000/graphql",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile: Delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"query\": \"mutation { deleteProfile(id: 1) { raw { affectedRows } } }\" }"
 						},
 						"url": {
 							"raw": "localhost:3000/graphql",
