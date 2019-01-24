@@ -1,4 +1,4 @@
-import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-controllers'
+import { Controller, Param, QueryParam, Body, Get, Post, Put, Delete } from 'routing-controllers'
 import { getRepository } from 'typeorm'
 import { Place } from '../data/entities'
 
@@ -10,9 +10,25 @@ import { Place } from '../data/entities'
 export class PlaceController {
   repository = getRepository(Place)
 
+  create (input: any) {
+    const place = new Place()
+    this.repository.merge(place, input)
+    return this.post(place)
+  }
+
+  async update (id: number, input: any) {
+    const place = await this.repository.findOne(id)
+    if (!place) {
+      throw new Error(`Couldn’t find place with id ${id}`)
+    }
+    this.repository.merge(place, input)
+    return this.post(place)
+  }
+
   @Get()
-  getAll () {
-    return this.repository.find()
+  getAll (@QueryParam('limit') limit: number,
+          @QueryParam('offset') offset: number) {
+    return this.repository.find({ take: limit, skip: offset })
   }
 
   @Get('/:id')
@@ -21,7 +37,7 @@ export class PlaceController {
   }
 
   @Post()
-  async post (@Body() entity: Place) {
+  post (@Body() entity: Place) {
     return this.repository.save(entity)
   }
 

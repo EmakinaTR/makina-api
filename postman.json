@@ -204,7 +204,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"b@b.com\",\n\t\"firstName\": \"a\",\n\t\"lastName\": \"b\",\n\t\"birthDate\": \"1980-01-01\",\n\t\"placeId\": 1\n}"
+							"raw": "{\n\t\"email\": \"b@b.com\",\n\t\"firstName\": \"a\",\n\t\"lastName\": \"b\",\n\t\"birthDate\": \"1980-01-01\",\n\t\"place\": 1\n}"
 						},
 						"url": {
 							"raw": "localhost:3000/profile",

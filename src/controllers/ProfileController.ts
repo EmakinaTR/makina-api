@@ -1,4 +1,4 @@
-import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-controllers'
+import { Controller, Param, QueryParam, Body, Get, Post, Put, Delete } from 'routing-controllers'
 import { getRepository } from 'typeorm'
 import { Profile } from '../data/entities'
 
@@ -10,9 +10,25 @@ import { Profile } from '../data/entities'
 export class ProfileController {
   repository = getRepository(Profile)
 
+  create (input: any) {
+    const profile = new Profile()
+    this.repository.merge(profile, input)
+    return this.post(profile)
+  }
+
+  async update (id: number, input: any) {
+    const profile = await this.repository.findOne(id)
+    if (!profile) {
+      throw new Error(`Couldn’t find profile with id ${id}`)
+    }
+    this.repository.merge(profile, input)
+    return this.post(profile)
+  }
+
   @Get()
-  getAll () {
-    return this.repository.find()
+  getAll (@QueryParam('limit') limit: number,
+          @QueryParam('offset') offset: number) {
+    return this.repository.find({ take: limit, skip: offset })
   }
 
   @Get('/:id')

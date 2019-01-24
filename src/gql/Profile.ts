@@ -1,5 +1,4 @@
-import { getRepository } from 'typeorm'
-import { Profile } from '../data/entities'
+import { PlaceController, ProfileController } from '../controllers'
 
 export const typeDefs = `
   input ProfileInput {
@@ -24,7 +23,7 @@ export const typeDefs = `
 
   extend type Query {
     profile(id: ID!): Profile
-    profiles: [Profile]
+    profiles(first: Int, offset: Int, after: ID): [Profile]
   }
   extend type Mutation {
     createProfile(input: ProfileInput): Profile
@@ -34,33 +33,28 @@ export const typeDefs = `
 `
 
 export const resolvers = {
+  Profile: {
+    place (_: any) {
+      return new PlaceController().getOne(_.profile_id)
+    }
+  },
   Query: {
     profile: (_: any, { id }: any) => {
-      return getRepository(Profile).findOne(id, { relations: ['place'] })
+      return new ProfileController().getOne(id)
     },
-    profiles: () => {
-      return getRepository(Profile).find({ relations: ['place'] })
+    profiles: (_: any, { first, offset }: any) => {
+      return new ProfileController().getAll(first, offset)
     }
   },
   Mutation: {
-    createProfile: async (_: any, { input }: any) => {
-      const repository = getRepository(Profile)
-      const profile = new Profile()
-      repository.merge(profile, input)
-      return repository.save(profile)
+    createProfile: (_: any, { input }: any) => {
+      return new ProfileController().create(input)
     },
     updateProfile: async (_: any, { id, input }: any) => {
-      const repository = getRepository(Profile)
-      const profile = await repository.findOne(id)
-      if (!profile) {
-        throw new Error(`Couldn’t find profile with id ${id}`)
-      }
-      repository.merge(profile, input)
-      console.log(profile, input)
-      return repository.save(profile)
+      return new ProfileController().update(id, input)
     },
     deleteProfile: (_: any, { id }: any) => {
-      return getRepository(Profile).delete(id)
+      return new ProfileController().remove(id)
     }
   }
 }

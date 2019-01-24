@@ -26,6 +26,9 @@ export class Profile extends BaseEntry {
   @Column({ type: 'varchar' })
   phone: string | null = null
 
+  @Column({ nullable: true })
+  place_id: number | undefined // eslint-disable-line
+
   @ManyToOne(type => Place, place => place.profile)
-  place: Place | undefined;
+  place: Place | undefined
 }

@@ -1,5 +1,4 @@
-import { getRepository } from 'typeorm'
-import { Place } from '../data/entities'
+import { PlaceController } from '../controllers'
 
 export const typeDefs = `
   enum PlaceType {
@@ -21,7 +20,7 @@ export const typeDefs = `
 
   extend type Query {
     place(id: ID!): Place
-    places: [Place]
+    places(first: Int, offset: Int): [Place]
   }
   extend type Mutation {
     createPlace(input: PlaceInput): Place
@@ -33,30 +32,21 @@ export const typeDefs = `
 export const resolvers = {
   Query: {
     place: (_: any, { id }: any) => {
-      return getRepository(Place).findOne(id)
+      return new PlaceController().getOne(id)
     },
-    places: () => {
-      return getRepository(Place).find()
+    places: (_: any, { first, offset }: any) => {
+      return new PlaceController().getAll(first, offset)
     }
   },
   Mutation: {
     createPlace: (_: any, { input }: any) => {
-      const repository = getRepository(Place)
-      const place = new Place()
-      repository.merge(place, input)
-      return repository.save(place)
+      return new PlaceController().create(input)
     },
     updatePlace: async (_: any, { id, input }: any) => {
-      const repository = getRepository(Place)
-      const place = await repository.findOne(id)
-      if (!place) {
-        throw new Error(`Couldn’t find place with id ${id}`)
-      }
-      repository.merge(place, input)
-      return repository.save(place)
+      return new PlaceController().update(id, input)
     },
     deletePlace: (_: any, { id }: any) => {
-      return getRepository(Place).delete(id)
+      return new PlaceController().remove(id)
     }
   }
 }
