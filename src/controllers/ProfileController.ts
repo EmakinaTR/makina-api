@@ -8,6 +8,14 @@ import { Profile } from '../data/entities'
  */
 @Controller('/profile')
 export class ProfileController {
+  private static instance: ProfileController
+  static getInstance () {
+    if (!ProfileController.instance) {
+      ProfileController.instance = new ProfileController()
+    }
+    return ProfileController.instance
+  }
+
   repository = getRepository(Profile)
 
   create (input: any) {

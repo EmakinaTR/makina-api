@@ -3,15 +3,15 @@ import { makeExecutableSchema } from 'apollo-server-koa'
 import {
   typeDefs as Common,
   resolvers as commonResolvers
-} from './Common'
+} from './CommonDefinitions'
 import {
   typeDefs as Place,
   resolvers as placeResolvers
-} from './Place'
+} from './PlaceDefinitions'
 import {
   typeDefs as Profile,
   resolvers as profileResolvers
-} from './Profile'
+} from './ProfileDefinitions'
 
 const Base = `
   type Query {

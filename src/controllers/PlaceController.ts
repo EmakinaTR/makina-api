@@ -8,6 +8,14 @@ import { Place } from '../data/entities'
  */
 @Controller('/place')
 export class PlaceController {
+  private static instance: PlaceController
+  static getInstance () {
+    if (!PlaceController.instance) {
+      PlaceController.instance = new PlaceController()
+    }
+    return PlaceController.instance
+  }
+
   repository = getRepository(Place)
 
   create (input: any) {

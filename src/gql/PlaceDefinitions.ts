@@ -13,40 +13,40 @@ export const typeDefs = `
     type: PlaceType
   }
   type Place {
-    id: ID
+    id: Int
     name: String
     type: PlaceType
   }
 
   extend type Query {
-    place(id: ID!): Place
+    place(id: Int!): Place
     places(first: Int, offset: Int): [Place]
   }
   extend type Mutation {
     createPlace(input: PlaceInput): Place
-    updatePlace(id: ID!, input: PlaceInput): Place
-    deletePlace(id: ID!): DBResponse
+    updatePlace(id: Int!, input: PlaceInput): Place
+    deletePlace(id: Int!): DBResponse
   }
 `
 
 export const resolvers = {
   Query: {
     place: (_: any, { id }: any) => {
-      return new PlaceController().getOne(id)
+      return PlaceController.getInstance().getOne(id)
     },
     places: (_: any, { first, offset }: any) => {
-      return new PlaceController().getAll(first, offset)
+      return PlaceController.getInstance().getAll(first, offset)
     }
   },
   Mutation: {
     createPlace: (_: any, { input }: any) => {
-      return new PlaceController().create(input)
+      return PlaceController.getInstance().create(input)
     },
     updatePlace: async (_: any, { id, input }: any) => {
-      return new PlaceController().update(id, input)
+      return PlaceController.getInstance().update(id, input)
     },
     deletePlace: (_: any, { id }: any) => {
-      return new PlaceController().remove(id)
+      return PlaceController.getInstance().remove(id)
     }
   }
 }

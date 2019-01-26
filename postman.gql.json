@@ -201,7 +201,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"query\": \"mutation { updateProfile(id: 1, input: { place: 1 } ) { email address place { name } } }\" }"
+							"raw": "{ \"query\": \"mutation { updateProfile(id: 1, input: { place_id: 1 } ) { email address place { name } } }\" }"
 						},
 						"url": {
 							"raw": "localhost:3000/graphql",

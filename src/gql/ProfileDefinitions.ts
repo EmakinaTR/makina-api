@@ -8,10 +8,10 @@ export const typeDefs = `
     birthDate: Date
     address: String
     phone: String
-    place: ID
+    place_id: Int
   }
   type Profile {
-    id: ID
+    id: Int
     email: String
     firstName: String
     lastName: String
@@ -22,39 +22,39 @@ export const typeDefs = `
   }
 
   extend type Query {
-    profile(id: ID!): Profile
-    profiles(first: Int, offset: Int, after: ID): [Profile]
+    profile(id: Int!): Profile
+    profiles(first: Int, offset: Int, after: Int): [Profile]
   }
   extend type Mutation {
     createProfile(input: ProfileInput): Profile
-    updateProfile(id: ID!, input: ProfileInput): Profile
-    deleteProfile(id: ID!): DBResponse
+    updateProfile(id: Int!, input: ProfileInput): Profile
+    deleteProfile(id: Int!): DBResponse
   }
 `
 
 export const resolvers = {
   Profile: {
     place (_: any) {
-      return new PlaceController().getOne(_.profile_id)
+      return PlaceController.getInstance().getOne(_.place_id)
     }
   },
   Query: {
     profile: (_: any, { id }: any) => {
-      return new ProfileController().getOne(id)
+      return ProfileController.getInstance().getOne(id)
     },
     profiles: (_: any, { first, offset }: any) => {
-      return new ProfileController().getAll(first, offset)
+      return ProfileController.getInstance().getAll(first, offset)
     }
   },
   Mutation: {
     createProfile: (_: any, { input }: any) => {
-      return new ProfileController().create(input)
+      return ProfileController.getInstance().create(input)
     },
     updateProfile: async (_: any, { id, input }: any) => {
-      return new ProfileController().update(id, input)
+      return ProfileController.getInstance().update(id, input)
     },
     deleteProfile: (_: any, { id }: any) => {
-      return new ProfileController().remove(id)
+      return ProfileController.getInstance().remove(id)
     }
   }
 }

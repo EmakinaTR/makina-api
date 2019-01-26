@@ -1,1 +1,1 @@
-export {}
+export { createRepositoryMock } from './RepositoryMockUtils'
