@@ -1,6 +1,5 @@
-import { Entity, Column, OneToMany } from 'typeorm'
+import { Entity, Column } from 'typeorm'
 import { BaseEntry } from './BaseEntry'
-import { Profile } from './Profile'
 
 /**
  * Entity class mapping rows in 'place' table.
@@ -13,7 +12,4 @@ export class Place extends BaseEntry {
 
   @Column({ type: 'enum' })
   type: 'country' | 'state' | 'region' | 'city' | 'district' = 'city'
-
-  @OneToMany(type => Profile, profile => profile.place)
-  profile: Profile[] | undefined;
 }
