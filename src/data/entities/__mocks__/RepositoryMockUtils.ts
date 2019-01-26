@@ -1,7 +1,12 @@
 import _ from 'lodash'
 import * as typeorm from 'typeorm'
 
+/**
+ * Creates a middleware function to test functionaltiy of API.
+ * Provides a mock implementation to the typeorm.getRepository
+ */
 export function createRepositoryMock (): void {
+  // Temporarily stores created entities.
   const fakeDatabase: any = {
     Place: {
       id: 1,
