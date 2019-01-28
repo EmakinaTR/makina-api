@@ -27,7 +27,7 @@ export class Profile extends BaseEntry {
   phone: string | null = null
 
   @Column({ type: 'bigint' })
-  place_id: number | null = null // eslint-disable-line
+  placeId: number | null = null
 
   @ManyToOne(type => Place)
   place: Place | null = null
