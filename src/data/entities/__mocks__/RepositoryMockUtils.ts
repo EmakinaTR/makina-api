@@ -22,7 +22,7 @@ export function createRepositoryMock (): void {
     return fakeDatabase[entityType.name].entities
   }
 
-  function getId (entityType: any): number {
+  function getAndIncrementId (entityType: any): number {
     return fakeDatabase[entityType.name].id++
   }
 
@@ -49,7 +49,7 @@ export function createRepositoryMock (): void {
         return getEntities(entityType)
       },
       save: (entity: any): any => {
-        entity.id = entity.id || getId(entityType)
+        entity.id = entity.id || getAndIncrementId(entityType)
         updateEntities(getEntities(entityType), entity)
         return entity
       },
