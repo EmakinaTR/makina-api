@@ -8,7 +8,7 @@ export const typeDefs = `
     birthDate: Date
     address: String
     phone: String
-    place_id: Int
+    placeId: Int
   }
   type Profile {
     id: Int
@@ -35,7 +35,7 @@ export const typeDefs = `
 export const resolvers = {
   Profile: {
     place (_: any) {
-      return PlaceController.getInstance().getOne(_.place_id)
+      return PlaceController.getInstance().getOne(_.placeId)
     }
   },
   Query: {
