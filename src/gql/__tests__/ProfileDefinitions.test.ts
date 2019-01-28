@@ -70,7 +70,7 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
   it('should create "b@b.com".', async () => {
     const gql = `
       mutation {
-        createProfile(input: { email: "b@b.com", place_id: 1 }) {
+        createProfile(input: { email: "b@b.com", place: 1 }) {
           id
           email
           place {

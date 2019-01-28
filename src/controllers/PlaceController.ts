@@ -25,7 +25,7 @@ export class PlaceController {
   }
 
   async update (id: number, input: any) {
-    const place = await this.repository.findOne(id)
+    const place = await this.getOne(id)
     if (!place) {
       throw new Error(`Couldn’t find place with id ${id}`)
     }

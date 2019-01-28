@@ -41,8 +41,8 @@ export function createRepositoryMock (): void {
         // TODO be sure that merge protects entities' field consistency.
         _.merge(entity, input)
       },
-      findOne: (id: number): any => {
-        let found = getEntities(entityType).filter(x => x.id === id)
+      findOne: (arg: any): any => {
+        let found = getEntities(entityType).filter(x => x.id === arg.where.id)
         return found.length > 0 ? found[0] : null
       },
       find: (): any => {

@@ -25,7 +25,7 @@ export class ProfileController {
   }
 
   async update (id: number, input: any) {
-    const profile = await this.repository.findOne(id)
+    const profile = await this.getOne(id)
     if (!profile) {
       throw new Error(`Couldn’t find profile with id ${id}`)
     }
@@ -41,7 +41,7 @@ export class ProfileController {
 
   @Get('/:id')
   getOne (@Param('id') id: number) {
-    return this.repository.findOne(id)
+    return this.repository.findOne({ where: { 'id': id } })
   }
 
   @Post()
