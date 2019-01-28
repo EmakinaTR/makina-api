@@ -41,7 +41,7 @@ export class PlaceController {
 
   @Get('/:id')
   getOne (@Param('id') id: number) {
-    return this.repository.findOne(id)
+    return this.repository.findOne({ where: { 'id': id } })
   }
 
   @Post()
