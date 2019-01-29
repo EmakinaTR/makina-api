@@ -1,16 +1,26 @@
 import { schema } from '..'
 import { graphql } from 'graphql'
-import { createRepositoryMock } from '../../data/entities/__mocks__/'
+import { createRepositoryMock, createProfile } from '../../data/entities/__mocks__/'
 
 describe('Place - GraphQL Definitions and Resolvers', () => {
+  const fake: any = {}
+
   beforeAll(async () => {
-    createRepositoryMock()
+    createRepositoryMock(fake)
   })
 
-  it('should create "a@a.com".', async () => {
+  it('should create a profile.', async () => {
+    const profile = createProfile()
+    let email = profile.email
+    let birthDate = profile.birthDate
+    let birthDateStr = birthDate!.toISOString()
+
+    fake.data = { Profile: [profile] }
+    const expected: any = { 'id': profile.id, 'email': email, 'birthDate': birthDate }
+
     const gql = `
       mutation {
-        createProfile(input: { email: "a@a.com", birthDate: "1988-06-08"}) {
+        createProfile(input: { email: "${email}", birthDate: "${birthDateStr}" }) {
           id
           email
           birthDate
@@ -19,6 +29,23 @@ describe('Place - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'createProfile': { 'id': 1, 'email': 'a@a.com', 'birthDate': new Date('1988-06-08') } })
+    expect(data).toEqual({ 'createProfile': expected })
+  })
+
+  it('should delete a profile.', async () => {
+    fake.data = { Profile: [ { 'raw': { 'affectedRows': 1 } } ] }
+    const expected: any = { 'raw': { 'affectedRows': 1 } }
+    const gql = `
+      mutation {
+        deleteProfile(id: 2) {
+          raw {
+            affectedRows
+          }
+        }
+      }
+    `
+
+    const { data } = await graphql(schema, gql, {}, {})
+    expect(data).toEqual({ 'deleteProfile': expected })
   })
 })

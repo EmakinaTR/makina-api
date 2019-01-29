@@ -35,7 +35,11 @@ export const typeDefs = `
 export const resolvers = {
   Profile: {
     place (_: any) {
-      return PlaceController.getInstance().getOne(_.place)
+      if (typeof _.place === 'number') {
+        return PlaceController.getInstance().getOne(_.place)
+      } else {
+        return _.place
+      }
     }
   },
   Query: {

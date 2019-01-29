@@ -1,13 +1,17 @@
 import { schema } from '..'
 import { graphql } from 'graphql'
-import { createRepositoryMock } from '../../data/entities/__mocks__/'
+import { createRepositoryMock, createProfile } from '../../data/entities/__mocks__/'
 
 describe('Profile - GraphQL Definitions and Resolvers', () => {
+  const fake: any = {}
+
   beforeAll(async () => {
-    createRepositoryMock()
+    createRepositoryMock(fake)
   })
 
   it('should fetch all profiles as empty list.', async () => {
+    fake.data = { Profile: [] }
+    const expected: any = []
     const gql = `
       query {
         profiles {
@@ -17,13 +21,81 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'profiles': [] })
+    expect(data).toEqual({ 'profiles': expected })
   })
 
-  it('should create "a@a.com".', async () => {
+  it('should fetch all profiles', async () => {
+    const profileA = createProfile()
+    const profileB = createProfile()
+
+    fake.data = { Profile: [profileA, profileB], Place: [profileA!.place, profileB!.place] }
+    const expected: any = [
+      { 'email': profileA.email, 'place': { 'name': profileA!.place!.name } },
+      { 'email': profileB.email, 'place': { 'name': profileB!.place!.name } }]
+    const gql = `
+      query {
+        profiles {
+          email
+          place {
+            name
+          }
+        }
+      }
+    `
+
+    const { data } = await graphql(schema, gql, {}, {})
+    expect(data).toEqual({ 'profiles': expected })
+  })
+
+  it('should fetch a profile.', async () => {
+    const profile = createProfile()
+    let id = profile.id
+
+    fake.data = { Profile: [profile] }
+    const expected: any = { 'email': profile.email }
+    const gql = `
+      query {
+        profile(id: ${id}) {
+          email
+        }
+      }
+    `
+
+    const { data } = await graphql(schema, gql, {}, {})
+    expect(data).toEqual({ 'profile': expected })
+  })
+
+  it('should not fetch a profile.', async () => {
+    fake.data = { Profile: [] }
+    const expected: any = null
+    const gql = `
+      query {
+        profile(id: 1) {
+          email
+        }
+      }
+    `
+
+    const { data } = await graphql(schema, gql, {}, {})
+    expect(data).toEqual({ 'profile': expected })
+  })
+
+  it('should create a profile.', async () => {
+    const profile = createProfile()
+    let email = profile.email
+    let firstName = profile.firstName
+    let lastName = profile.lastName
+    let birthDate = profile.birthDate
+    let birthDateStr = birthDate!.toISOString()
+    let phone = profile.phone
+    let address = profile.address
+
+    fake.data = { Profile: [profile] }
+    const expected: any = { 'id': profile.id, 'email': email, 'firstName': firstName, 'lastName': lastName, 'birthDate': birthDate, 'phone': phone, 'address': address }
+
     const gql = `
       mutation {
-        createProfile(input: { email: "a@a.com"}) {
+        createProfile(input: { email: "${email}", firstName: "${firstName}", lastName: "${lastName}", birthDate: "${birthDateStr}", phone: "${phone}", address: "${address}"}) {
           id
           email
           firstName
@@ -36,59 +108,58 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'createProfile': { 'id': 1, 'email': 'a@a.com', 'firstName': null, 'lastName': null, 'birthDate': null, 'phone': null, 'address': null } })
+    expect(data).toEqual({ 'createProfile': expected })
   })
 
-  it('should fetch "a@a.com".', async () => {
-    const gql = `
-      query {
-        profile(id: 1) {
-          email
-        }
-      }
-    `
+  it('should create a profile with place.', async () => {
+    const profile = createProfile()
+    let email = profile.email
+    let firstName = profile.firstName
+    let lastName = profile.lastName
+    let birthDate = profile.birthDate
+    let birthDateStr = birthDate != null ? birthDate.toISOString() : null
+    let phone = profile.phone
+    let address = profile.address
+    let place = profile.place
+    let placeId = place!.id
 
-    const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'profile': { 'email': 'a@a.com' } })
-  })
+    fake.data = { Profile: [profile], Place: [profile.place] }
+    const expected: any = { 'id': profile.id, 'email': email, 'firstName': firstName, 'lastName': lastName, 'birthDate': birthDate, 'phone': phone, 'address': address, 'place': { 'id': placeId, 'name': place!.name, 'type': place!.type } }
 
-  it('should create "İzmir".', async () => {
-    const gql = `
-      mutation {
-        createPlace(input: { name: "İzmir", type: city}) {
-          id
-          name
-          type
-        }
-      }
-    `
-
-    const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'createPlace': { 'id': 1, 'name': 'İzmir', 'type': 'city' } })
-  })
-
-  it('should create "b@b.com".', async () => {
     const gql = `
       mutation {
-        createProfile(input: { email: "b@b.com", place: 1 }) {
+        createProfile(input: { email: "${email}", firstName: "${firstName}", lastName: "${lastName}", birthDate: "${birthDateStr}", phone: "${phone}", address: "${address}", place: ${placeId}}) {
           id
           email
+          firstName
+          lastName
+          birthDate
+          phone
+          address
           place {
             id
             name
+            type
           }
         }
       }
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'createProfile': { 'id': 2, 'email': 'b@b.com', 'place': { 'id': 1, 'name': 'İzmir' } } })
+    expect(data).toEqual({ 'createProfile': expected })
   })
 
-  it('should update "b@b.com" to "c@c.com".', async () => {
+  it('should update a profile.', async () => {
+    const profile = createProfile()
+    let id = profile.id
+    let email = 'sample@example.com'
+    profile.email = email
+
+    fake.data = { Profile: [profile] }
+    const expected: any = { 'id': id, 'email': email }
     const gql = `
       mutation {
-        updateProfile(id: 2, input: { email: "c@c.com" }) {
+        updateProfile(id: ${id}, input: { email: "${email}" }) {
           id
           email
         }
@@ -96,26 +167,28 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'updateProfile': { 'id': 2, 'email': 'c@c.com' } })
+    expect(data).toEqual({ 'updateProfile': expected })
   })
 
-  it('should fetch ["a@a.com", "c@c.com"].', async () => {
+  it('should not update a profile.', async () => {
+    fake.data = { Profile: [] }
+    const expected: any = null
     const gql = `
-      query {
-        profiles {
+      mutation {
+        updateProfile(id: 1, input: { email: "a@a.com" }) {
+          id
           email
-          place {
-            name
-          }
         }
       }
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'profiles': [{ 'email': 'a@a.com', 'place': null }, { 'email': 'c@c.com', 'place': { 'name': 'İzmir' } }] })
+    expect(data).toEqual({ 'updateProfile': expected })
   })
 
-  it('should delete "c@c.com".', async () => {
+  it('should delete a profile.', async () => {
+    fake.data = { Profile: [ { 'raw': { 'affectedRows': 1 } } ] }
+    const expected: any = { 'raw': { 'affectedRows': 1 } }
     const gql = `
       mutation {
         deleteProfile(id: 2) {
@@ -127,10 +200,12 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'deleteProfile': { 'raw': { 'affectedRows': 1 } } })
+    expect(data).toEqual({ 'deleteProfile': expected })
   })
 
-  it('should not delete "c@c.com" again.', async () => {
+  it('should not delete.', async () => {
+    fake.data = { Profile: [ { 'raw': { 'affectedRows': 0 } } ] }
+    const expected: any = { 'raw': { 'affectedRows': 0 } }
     const gql = `
       mutation {
         deleteProfile(id: 2) {
@@ -142,33 +217,6 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'deleteProfile': { 'raw': { 'affectedRows': 0 } } })
-  })
-
-  it('should not fetch "c@c.com".', async () => {
-    const gql = `
-      query {
-        profile(id: 2) {
-          email
-        }
-      }
-    `
-
-    const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'profile': null })
-  })
-
-  it('should fetch ["a@a.com"].', async () => {
-    const gql = `
-      query {
-        profiles {
-          id
-          email
-        }
-      }
-    `
-
-    const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'profiles': [{ 'id': 1, 'email': 'a@a.com' }] })
+    expect(data).toEqual({ 'deleteProfile': expected })
   })
 })

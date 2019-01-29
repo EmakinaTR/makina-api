@@ -1,13 +1,17 @@
 import { schema } from '..'
 import { graphql } from 'graphql'
-import { createRepositoryMock } from '../../data/entities/__mocks__/'
+import { createRepositoryMock, createPlace } from '../../data/entities/__mocks__/'
 
 describe('Place - GraphQL Definitions and Resolvers', () => {
+  const fake: any = {}
+
   beforeAll(async () => {
-    createRepositoryMock()
+    createRepositoryMock(fake)
   })
 
   it('should fetch all places as empty list.', async () => {
+    fake.data = { Place: [] }
+    const expected: any = []
     const gql = `
       query {
         places {
@@ -17,25 +21,50 @@ describe('Place - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'places': [] })
+    expect(data).toEqual({ 'places': expected })
   })
 
-  it('should create "İzmir".', async () => {
+  it('should fetch all places', async () => {
+    const placeA = createPlace()
+    const placeB = createPlace()
+
+    fake.data = { Place: [placeA, placeB] }
+    const expected: any = [
+      { 'name': placeA.name },
+      { 'name': placeB.name }]
     const gql = `
-      mutation {
-        createPlace(input: { name: "İzmir", type: city}) {
-          id
+      query {
+        places {
           name
-          type
         }
       }
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'createPlace': { 'id': 1, 'name': 'İzmir', 'type': 'city' } })
+    expect(data).toEqual({ 'places': expected })
   })
 
-  it('should fetch "İzmir".', async () => {
+  it('should fetch a place.', async () => {
+    const place = createPlace()
+    let id = place.id
+
+    fake.data = { Place: [place] }
+    const expected: any = { 'name': place.name }
+    const gql = `
+      query {
+        place(id: ${id}) {
+          name
+        }
+      }
+    `
+
+    const { data } = await graphql(schema, gql, {}, {})
+    expect(data).toEqual({ 'place': expected })
+  })
+
+  it('should not fetch a place.', async () => {
+    fake.data = { Place: [] }
+    const expected: any = null
     const gql = `
       query {
         place(id: 1) {
@@ -45,13 +74,19 @@ describe('Place - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'place': { 'name': 'İzmir' } })
+    expect(data).toEqual({ 'place': expected })
   })
 
-  it('should create "Gaziemir".', async () => {
+  it('should create a place.', async () => {
+    const place = createPlace()
+    let name = place.name
+    let type = place.type
+
+    fake.data = { Place: [place] }
+    const expected: any = { 'id': place.id, 'name': name, 'type': type }
     const gql = `
       mutation {
-        createPlace(input: { name: "Gaziemir", type: district}) {
+        createPlace(input: { name: "${name}", type: ${type}}) {
           id
           name
           type
@@ -60,28 +95,36 @@ describe('Place - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'createPlace': { 'id': 2, 'name': 'Gaziemir', 'type': 'district' } })
+    expect(data).toEqual({ 'createPlace': expected })
   })
 
-  it('should update "Gaziemir" to "Ankara".', async () => {
+  it('should update a place.', async () => {
+    const place = createPlace()
+    let id = place.id
+    let name = 'İzmir'
+    place.name = name
+
+    fake.data = { Place: [place] }
+    const expected: any = { 'id': id, 'name': name }
     const gql = `
       mutation {
-        updatePlace(id: 2, input: { name: "Ankara", type: city}) {
+        updatePlace(id: ${id}, input: { name: "${name}" }) {
           id
           name
-          type
         }
       }
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'updatePlace': { 'id': 2, 'name': 'Ankara', 'type': 'city' } })
+    expect(data).toEqual({ 'updatePlace': expected })
   })
 
-  it('should fetch ["İzmir", "Ankara"].', async () => {
+  it('should not update a place.', async () => {
+    fake.data = { Place: [] }
+    const expected: any = null
     const gql = `
-      query {
-        places {
+      mutation {
+        updatePlace(id: 1, input: { name: "İzmir" }) {
           id
           name
         }
@@ -89,10 +132,12 @@ describe('Place - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'places': [{ 'id': 1, 'name': 'İzmir' }, { 'id': 2, 'name': 'Ankara' }] })
+    expect(data).toEqual({ 'updatePlace': expected })
   })
 
-  it('should delete "Ankara".', async () => {
+  it('should delete a place.', async () => {
+    fake.data = { Place: [ { 'raw': { 'affectedRows': 1 } } ] }
+    const expected: any = { 'raw': { 'affectedRows': 1 } }
     const gql = `
       mutation {
         deletePlace(id: 2) {
@@ -104,10 +149,12 @@ describe('Place - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'deletePlace': { 'raw': { 'affectedRows': 1 } } })
+    expect(data).toEqual({ 'deletePlace': expected })
   })
 
-  it('should not delete "Ankara" again.', async () => {
+  it('should not delete.', async () => {
+    fake.data = { Place: [ { 'raw': { 'affectedRows': 0 } } ] }
+    const expected: any = { 'raw': { 'affectedRows': 0 } }
     const gql = `
       mutation {
         deletePlace(id: 2) {
@@ -119,33 +166,6 @@ describe('Place - GraphQL Definitions and Resolvers', () => {
     `
 
     const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'deletePlace': { 'raw': { 'affectedRows': 0 } } })
-  })
-
-  it('should not fetch "Ankara".', async () => {
-    const gql = `
-      query {
-        place(id: 2) {
-          name
-        }
-      }
-    `
-
-    const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'place': null })
-  })
-
-  it('should fetch ["İzmir"].', async () => {
-    const gql = `
-      query {
-        places {
-          id
-          name
-        }
-      }
-    `
-
-    const { data } = await graphql(schema, gql, {}, {})
-    expect(data).toEqual({ 'places': [{ 'id': 1, 'name': 'İzmir' }] })
+    expect(data).toEqual({ 'deletePlace': expected })
   })
 })
