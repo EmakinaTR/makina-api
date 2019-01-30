@@ -1,6 +1,7 @@
 import { Controller, Param, QueryParam, Body, Get, Post, Put, Delete } from 'routing-controllers'
 import { getRepository } from 'typeorm'
 import { Place } from '../data/entities'
+import _ from 'lodash'
 
 /**
  * REST controller handling Place requests
