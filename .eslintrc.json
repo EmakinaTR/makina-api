@@ -6,7 +6,8 @@
   "parser": "typescript-eslint-parser",
   "plugins": [
     "typescript",
-    "jest"
+    "jest",
+    "graphql"
   ],
   "env": {
       "jest/globals": true
