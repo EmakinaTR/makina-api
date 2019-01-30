@@ -18,19 +18,16 @@ export class PlaceController {
 
   repository = getRepository(Place)
 
-  create (input: any) {
-    const place = new Place()
-    this.repository.merge(place, input)
-    return this.post(place)
+  async create (input: any) {
+    input = _.merge({}, input)
+    const profile = this.repository.merge(new Place(), input)
+    return this.post(profile)
   }
 
   async update (id: number, input: any) {
-    const place = await this.getOne(id)
-    if (!place) {
-      throw new Error(`Couldn’t find place with id ${id}`)
-    }
-    this.repository.merge(place, input)
-    return this.post(place)
+    input = _.merge({}, input)
+    await this.repository.update(id, input)
+    return this.getOne(id)
   }
 
   @Get()
