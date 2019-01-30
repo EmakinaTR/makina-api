@@ -1,6 +1,7 @@
 import { Controller, Param, QueryParam, Body, Get, Post, Put, Delete } from 'routing-controllers'
 import { getRepository } from 'typeorm'
 import { Profile } from '../data/entities'
+import _ from 'lodash'
 
 /**
  * REST controller handling Profile requests
@@ -18,19 +19,16 @@ export class ProfileController {
 
   repository = getRepository(Profile)
 
-  create (input: any) {
-    const profile = new Profile()
-    this.repository.merge(profile, input)
+  async create (input: any) {
+    input = _.merge({}, input)
+    const profile = this.repository.merge(new Profile(), input)
     return this.post(profile)
   }
 
   async update (id: number, input: any) {
-    const profile = await this.getOne(id)
-    if (!profile) {
-      throw new Error(`Couldn’t find profile with id ${id}`)
-    }
-    this.repository.merge(profile, input)
-    return this.post(profile)
+    input = _.merge({}, input)
+    await this.repository.update(id, input)
+    return this.getOne(id)
   }
 
   @Get()

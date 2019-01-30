@@ -1,35 +1,6 @@
-import { PlaceController } from '../controllers'
+import { PlaceController } from '../../controllers'
 
-export const typeDefs = `
-  enum PlaceType {
-    country
-    state
-    region
-    city
-    district
-  }
-  input PlaceInput {
-    name: String
-    type: PlaceType
-  }
-  type Place {
-    id: Int
-    name: String
-    type: PlaceType
-  }
-
-  extend type Query {
-    place(id: Int!): Place
-    places(first: Int, offset: Int): [Place]
-  }
-  extend type Mutation {
-    createPlace(input: PlaceInput): Place
-    updatePlace(id: Int!, input: PlaceInput): Place
-    deletePlace(id: Int!): DBResponse
-  }
-`
-
-export const resolvers = {
+export const place = {
   Query: {
     place: (_: any, { id }: any) => {
       return PlaceController.getInstance().getOne(id)

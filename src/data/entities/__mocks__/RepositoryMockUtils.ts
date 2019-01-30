@@ -22,6 +22,8 @@ export function createRepositoryMock (fake: any): void {
       save: (): any => {
         return getFakeData(entityType)[0]
       },
+      update: (): any => {
+      },
       delete: (): any => {
         return getFakeData(entityType)[0]
       }

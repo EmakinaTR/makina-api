@@ -1,21 +1,7 @@
 import { GraphQLScalarType } from 'graphql'
 import { Kind } from 'graphql/language'
 
-export const typeDefs = `
-  scalar Date
-
-  type DBResponseRaw {
-    fieldCount: Int
-    affectedRows: Int
-    insert: String
-    serverStatus: Int
-    warningStatus: Int
-  }
-  type DBResponse {
-    raw: DBResponseRaw
-  }
-`
-export const resolvers = {
+export const common = {
   Date: new GraphQLScalarType({
     name: 'Date',
     description: 'Date custom scalar type',

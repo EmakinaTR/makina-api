@@ -1,6 +1,6 @@
-import { schema } from '..'
+import { schema } from '../../'
 import { graphql } from 'graphql'
-import { createRepositoryMock, createProfile } from '../../data/entities/__mocks__/'
+import { createRepositoryMock, createProfile } from '../../../data/entities/__mocks__/'
 
 describe('Profile - GraphQL Definitions and Resolvers', () => {
   const fake: any = {}
@@ -128,7 +128,7 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
 
     const gql = `
       mutation {
-        createProfile(input: { email: "${email}", firstName: "${firstName}", lastName: "${lastName}", birthDate: "${birthDateStr}", phone: "${phone}", address: "${address}", place: ${placeId}}) {
+        createProfile(input: { email: "${email}", firstName: "${firstName}", lastName: "${lastName}", birthDate: "${birthDateStr}", phone: "${phone}", address: "${address}", place: {id: ${placeId}}}) {
           id
           email
           firstName

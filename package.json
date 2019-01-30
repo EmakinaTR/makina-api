@@ -7,7 +7,7 @@
   "scripts": {
     "start": "nodemon",
     "lint": "eslint \"src/**\"",
-    "build": "tsc && cpx \"src/**/*.sql\" dist",
+    "build": "tsc && cpx \"src/**/*.sql\" dist && cpx \"src/**/*.graphql\" dist",
     "test": "jest --detectOpenHandles --forceExit"
   },
   "repository": {
