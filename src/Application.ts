@@ -3,6 +3,7 @@ import { PlaceController, ProfileController } from './controllers'
 import Database from './data/Database'
 import * as dotenv from 'dotenv'
 import { ApolloServer } from 'apollo-server-koa'
+import 'reflect-metadata'
 import * as TypeGraphQL from 'type-graphql'
 import { resolvers } from './type-graphql/resolvers'
 
