@@ -3,7 +3,8 @@ import { PlaceController, ProfileController } from './controllers'
 import Database from './data/Database'
 import * as dotenv from 'dotenv'
 import { ApolloServer } from 'apollo-server-koa'
-import { schema } from './gql'
+import * as TypeGraphQL from 'type-graphql'
+import { resolvers } from './type-graphql/resolvers'
 
 /**
  * Singleton class managing application lifecycle.
@@ -25,6 +26,11 @@ class Application {
           PlaceController,
           ProfileController
         ]
+      })
+
+      // build TypeGraphQL executable schema
+      const schema = await TypeGraphQL.buildSchema({
+        resolvers: resolvers
       })
 
       const gqlServer = new ApolloServer({ schema })

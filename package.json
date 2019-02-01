@@ -29,6 +29,7 @@
     "mysql2": "^1.6.4",
     "reflect-metadata": "^0.1.12",
     "routing-controllers": "^0.7.7",
+    "type-graphql": "^0.16.0",
     "typeorm": "^0.2.9"
   },
   "devDependencies": {
