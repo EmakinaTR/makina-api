@@ -1,6 +1,7 @@
-import { Controller, Param, Body, Get, Post, Put, Delete } from 'routing-controllers'
+import { Controller, Param, QueryParam, Body, Get, Post, Put, Delete } from 'routing-controllers'
 import { getRepository } from 'typeorm'
 import { Place } from '../data/entities'
+import _ from 'lodash'
 
 /**
  * REST controller handling Place requests
@@ -8,20 +9,41 @@ import { Place } from '../data/entities'
  */
 @Controller('/place')
 export class PlaceController {
+  private static instance: PlaceController
+  static getInstance () {
+    if (!PlaceController.instance) {
+      PlaceController.instance = new PlaceController()
+    }
+    return PlaceController.instance
+  }
+
   repository = getRepository(Place)
 
+  async create (input: any) {
+    input = _.merge({}, input)
+    const profile = this.repository.merge(new Place(), input)
+    return this.post(profile)
+  }
+
+  async update (id: number, input: any) {
+    input = _.merge({}, input)
+    await this.repository.update(id, input)
+    return this.getOne(id)
+  }
+
   @Get()
-  getAll () {
-    return this.repository.find()
+  getAll (@QueryParam('limit') limit: number,
+          @QueryParam('offset') offset: number) {
+    return this.repository.find({ take: limit, skip: offset })
   }
 
   @Get('/:id')
   getOne (@Param('id') id: number) {
-    return this.repository.findOne(id)
+    return this.repository.findOne({ where: { 'id': id } })
   }
 
   @Post()
-  async post (@Body() entity: Place) {
+  post (@Body() entity: Place) {
     return this.repository.save(entity)
   }
 

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "nodemon",
     "lint": "eslint \"src/**\"",
-    "build": "tsc && cpx \"src/**/*.sql\" dist",
+    "build": "tsc && cpx \"src/**/*.sql\" dist && cpx \"src/**/*.graphql\" dist",
     "test": "jest --detectOpenHandles --forceExit"
   },
   "repository": {
@@ -18,10 +18,11 @@
   "author": "",
   "license": "apache-2.0",
   "dependencies": {
+    "apollo-server-koa": "^2.3.1",
     "async-retry": "^1.2.3",
     "dotenv": "^6.2.0",
+    "graphql": "^14.1.1",
     "koa": "^2.6.2",
-    "koa-bodyparser": "^4.2.1",
     "koa-multer": "^1.0.2",
     "koa-router": "^7.4.0",
     "lodash": "^4.17.11",
@@ -33,9 +34,10 @@
   "devDependencies": {
     "@types/async-retry": "^1.2.1",
     "@types/dotenv": "^6.1.0",
+    "@types/faker": "^4.1.5",
+    "@types/graphql": "^14.0.5",
     "@types/jest": "^23.3.10",
     "@types/koa": "^2.0.47",
-    "@types/koa-bodyparser": "^4.2.1",
     "@types/koa-router": "^7.0.35",
     "@types/lodash": "^4.14.119",
     "@types/node": "^10.12.18",
@@ -44,6 +46,7 @@
     "eslint": "^5.11.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-config-standard-react": "^7.0.2",
+    "eslint-plugin-graphql": "^3.0.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jest": "^22.1.2",
     "eslint-plugin-node": "^8.0.0",
@@ -51,6 +54,7 @@
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-typescript": "^0.14.0",
+    "faker": "^4.1.0",
     "jest": "^23.6.0",
     "nodemon": "^1.18.9",
     "supertest": "^3.3.0",
