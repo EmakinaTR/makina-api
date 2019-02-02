@@ -1,6 +1,6 @@
 import { Entity, Column } from 'typeorm'
 import { BaseEntry } from './BaseEntry'
-import { PlaceType } from './PlaceType'
+import { PlaceEnum } from '../enums/PlaceEnum'
 import { Field, ObjectType } from 'type-graphql'
 
 /**
@@ -11,10 +11,10 @@ import { Field, ObjectType } from 'type-graphql'
 @ObjectType()
 export class Place extends BaseEntry {
   @Column({ type: 'varchar' })
-  @Field(type => String)
-  name: string | null = null
+  @Field(type => String, { nullable: true })
+  name?: string
 
-  @Column({ type: 'enum', enum: PlaceType })
-  @Field(type => PlaceType)
-  type: PlaceType | null = PlaceType.city
+  @Column({ type: 'enum', enum: PlaceEnum, default: PlaceEnum.city })
+  @Field(type => PlaceEnum, { nullable: true })
+  type?: PlaceEnum
 }

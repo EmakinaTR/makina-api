@@ -1,6 +1,6 @@
 import { registerEnumType } from 'type-graphql'
 
-export enum PlaceType {
+export enum PlaceEnum {
   country = 'country', // eslint-disable-line no-unused-vars
   state = 'state', // eslint-disable-line no-unused-vars
   region = 'region', // eslint-disable-line no-unused-vars
@@ -9,6 +9,6 @@ export enum PlaceType {
 }
 
 // required for type-graphql
-registerEnumType(PlaceType, {
-  name: 'PlaceType'
+registerEnumType(PlaceEnum, {
+  name: 'PlaceEnum'
 })
