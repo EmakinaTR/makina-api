@@ -1,34 +1,43 @@
 import { Entity, Column, ManyToOne } from 'typeorm'
 import { BaseEntry } from './BaseEntry'
 import { Place } from './Place'
+import { Field, ObjectType } from 'type-graphql'
 
 /**
  * Entity class mapping rows in 'profile' table
  * @class
  */
 @Entity()
+@ObjectType()
 export class Profile extends BaseEntry {
   @Column({ type: 'varchar' })
-  email: string | null = null
+  @Field(type => String, { nullable: true })
+  email?: string
 
   @Column({ type: 'varchar' })
-  firstName: string | null = null
+  @Field(type => String, { nullable: true })
+  firstName?: string
 
   @Column({ type: 'varchar' })
-  lastName: string | null = null
+  @Field(type => String, { nullable: true })
+  lastName?: string
 
   @Column({ type: 'varchar' })
-  birthDate: Date | null = null
+  @Field(type => Date, { nullable: true })
+  birthDate?: Date
 
   @Column({ type: 'varchar' })
-  address: string | null = null
+  @Field(type => String, { nullable: true })
+  address?: string
 
   @Column({ type: 'varchar' })
-  phone: string | null = null
+  @Field(type => String, { nullable: true })
+  phone?: string
 
   @Column({ type: 'bigint' })
   placeId: number | null = null
 
   @ManyToOne(type => Place)
-  place: Place | null = null
+  @Field(type => Place, { nullable: true })
+  place?: Place
 }

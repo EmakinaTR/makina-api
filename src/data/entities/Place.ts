@@ -16,5 +16,5 @@ export class Place extends BaseEntry {
 
   @Column({ type: 'enum', enum: PlaceEnum, default: PlaceEnum.city })
   @Field(type => PlaceEnum, { nullable: true })
-  type?: PlaceEnum
+  type?: PlaceEnum = PlaceEnum.city
 }
