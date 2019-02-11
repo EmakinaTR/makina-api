@@ -12,9 +12,9 @@ import { Field, ObjectType } from 'type-graphql'
 export class Place extends BaseEntry {
   @Column({ type: 'varchar' })
   @Field(type => String, { nullable: true })
-  name?: string
+  name: string | null = null
 
   @Column({ type: 'enum', enum: PlaceEnum, default: PlaceEnum.city })
   @Field(type => PlaceEnum, { nullable: true })
-  type?: PlaceEnum = PlaceEnum.city
+  type: PlaceEnum | null = PlaceEnum.city
 }
