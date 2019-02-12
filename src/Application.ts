@@ -6,6 +6,7 @@ import { ApolloServer } from 'apollo-server-koa'
 import 'reflect-metadata'
 import * as TypeGraphQL from 'type-graphql'
 import { resolvers } from './type-graphql/resolvers'
+import { context } from './type-graphql/dataloader'
 
 /**
  * Singleton class managing application lifecycle.
@@ -29,12 +30,13 @@ class Application {
         ]
       })
 
-      // build TypeGraphQL executable schema
+      // Build TypeGraphQL executable schema
       const schema = await TypeGraphQL.buildSchema({
         resolvers: resolvers
       })
 
-      const gqlServer = new ApolloServer({ schema })
+      // Set GraphQL middleware
+      const gqlServer = new ApolloServer({ schema, context })
       gqlServer.applyMiddleware({ app })
 
       this._server = app.listen(port)

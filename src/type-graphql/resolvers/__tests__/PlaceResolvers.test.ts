@@ -2,16 +2,22 @@ import * as TypeGraphQL from 'type-graphql'
 import { resolvers } from '..'
 import { graphql } from 'graphql'
 import { createRepositoryMock, createPlace } from '../../../data/entities/__mocks__/'
+import { context } from '../../dataloader'
 
 describe('Place - GraphQL Definitions and Resolvers', () => {
   const fake: any = {}
   let schema: any
+  let ctx: any
 
   beforeAll(async () => {
     createRepositoryMock(fake)
     schema = await TypeGraphQL.buildSchema({
       resolvers: resolvers
     })
+  })
+
+  beforeEach(async () => {
+    ctx = await context()
   })
 
   it('should fetch all places as empty list.', async () => {
@@ -29,7 +35,7 @@ describe('Place - GraphQL Definitions and Resolvers', () => {
     expect(data).toEqual({ 'places': expected })
   })
 
-  it('should fetch all places', async () => {
+  it('should fetch all places.', async () => {
     const placeA = createPlace()
     const placeB = createPlace()
 
@@ -63,7 +69,7 @@ describe('Place - GraphQL Definitions and Resolvers', () => {
       }
     `
 
-    const { data } = await graphql(schema, gql, {}, {})
+    const { data } = await graphql(schema, gql, {}, ctx)
     expect(data).toEqual({ 'place': expected })
   })
 

@@ -1,14 +1,15 @@
 import { Place } from '../../data/entities/'
 import { PlaceController } from '../../controllers'
-import { Resolver, Query, Arg, Int, Mutation } from 'type-graphql'
+import { Resolver, Query, Arg, Int, Mutation, Ctx } from 'type-graphql'
 import { DBResponse } from '../types'
 import { PlaceInput } from '../inputs' // eslint-disable-line no-unused-vars
 
 @Resolver(Place)
 export class PlaceResolver {
   @Query(returns => Place, { nullable: true })
-  place (@Arg('id', type => Int) id: number) {
-    return PlaceController.getInstance().getOne(id)
+  place (@Arg('id', type => Int) id: number,
+         @Ctx() ctx: any) {
+    return ctx.loaders.place.load(id)
   }
 
   @Query(returns => [Place], { nullable: true })
