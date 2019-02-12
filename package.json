@@ -18,7 +18,7 @@
   "author": "",
   "license": "apache-2.0",
   "dependencies": {
-    "apollo-server-koa": "2.0.4",
+    "apollo-server-koa": "^2.4.0",
     "async-retry": "^1.2.3",
     "dataloader": "^1.4.0",
     "dotenv": "^6.2.0",
