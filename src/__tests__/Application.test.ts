@@ -1,9 +1,10 @@
 import request from 'supertest'
 import Application from '../Application'
+import Database from '../data/Database' // eslint-disable-line
 
 describe('server', () => {
   beforeAll(async () => {
-    jest.mock('../data/Database')
+    jest.spyOn(Database, 'connect').mockImplementation(async (): Promise<void> => {})
     await Application.start()
   })
 
