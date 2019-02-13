@@ -1,6 +1,6 @@
 import request from 'supertest'
 import Application from '../Application'
-import Database from '../data/Database' // eslint-disable-line
+import Database from '../data/Database'
 
 describe('server', () => {
   beforeAll(async () => {
