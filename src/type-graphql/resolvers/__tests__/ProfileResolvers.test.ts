@@ -1,12 +1,23 @@
-import { schema } from '../../'
+import * as TypeGraphQL from 'type-graphql'
+import { resolvers } from '..'
 import { graphql } from 'graphql'
 import { createRepositoryMock, createProfile } from '../../../data/entities/__mocks__/'
+import { context } from '../../dataloader'
 
 describe('Profile - GraphQL Definitions and Resolvers', () => {
   const fake: any = {}
+  let schema: any
+  let ctx: any
 
   beforeAll(async () => {
     createRepositoryMock(fake)
+    schema = await TypeGraphQL.buildSchema({
+      resolvers: resolvers
+    })
+  })
+
+  beforeEach(async () => {
+    ctx = await context()
   })
 
   it('should fetch all profiles as empty list.', async () => {
@@ -43,7 +54,7 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
       }
     `
 
-    const { data } = await graphql(schema, gql, {}, {})
+    const { data } = await graphql(schema, gql, {}, ctx)
     expect(data).toEqual({ 'profiles': expected })
   })
 
@@ -61,7 +72,7 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
       }
     `
 
-    const { data } = await graphql(schema, gql, {}, {})
+    const { data } = await graphql(schema, gql, {}, ctx)
     expect(data).toEqual({ 'profile': expected })
   })
 
@@ -91,7 +102,7 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     let address = profile.address
 
     fake.data = { Profile: [profile] }
-    const expected: any = { 'id': profile.id, 'email': email, 'firstName': firstName, 'lastName': lastName, 'birthDate': birthDate, 'phone': phone, 'address': address }
+    const expected: any = { 'id': profile.id, 'email': email, 'firstName': firstName, 'lastName': lastName, 'birthDate': birthDateStr, 'phone': phone, 'address': address }
 
     const gql = `
       mutation {
@@ -124,7 +135,7 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     let placeId = place!.id
 
     fake.data = { Profile: [profile], Place: [profile.place] }
-    const expected: any = { 'id': profile.id, 'email': email, 'firstName': firstName, 'lastName': lastName, 'birthDate': birthDate, 'phone': phone, 'address': address, 'place': { 'id': placeId, 'name': place!.name, 'type': place!.type } }
+    const expected: any = { 'id': profile.id, 'email': email, 'firstName': firstName, 'lastName': lastName, 'birthDate': birthDateStr, 'phone': phone, 'address': address, 'place': { 'id': placeId, 'name': place!.name, 'type': place!.type } }
 
     const gql = `
       mutation {
@@ -145,7 +156,7 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
       }
     `
 
-    const { data } = await graphql(schema, gql, {}, {})
+    const { data } = await graphql(schema, gql, {}, ctx)
     expect(data).toEqual({ 'createProfile': expected })
   })
 

@@ -32,8 +32,8 @@ export class PlaceController {
   }
 
   @Get()
-  getAll (@QueryParam('limit') limit: number,
-          @QueryParam('offset') offset: number) {
+  getAll (@QueryParam('limit') limit: number | undefined,
+          @QueryParam('offset') offset: number | undefined) {
     return this.repository.find({ take: limit, skip: offset })
   }
 

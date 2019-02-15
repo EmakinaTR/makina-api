@@ -18,8 +18,9 @@
   "author": "",
   "license": "apache-2.0",
   "dependencies": {
-    "apollo-server-koa": "2.0.4",
+    "apollo-server-koa": "^2.4.0",
     "async-retry": "^1.2.3",
+    "dataloader": "^1.4.0",
     "dotenv": "^6.2.0",
     "graphql": "^14.1.1",
     "koa": "^2.6.2",
@@ -27,8 +28,9 @@
     "koa-router": "^7.4.0",
     "lodash": "^4.17.11",
     "mysql2": "^1.6.4",
-    "reflect-metadata": "^0.1.12",
+    "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.7.7",
+    "type-graphql": "^0.16.0",
     "typeorm": "^0.2.9"
   },
   "devDependencies": {

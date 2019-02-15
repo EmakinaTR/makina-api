@@ -3,7 +3,10 @@ import { PlaceController, ProfileController } from './controllers'
 import Database from './data/Database'
 import * as dotenv from 'dotenv'
 import { ApolloServer } from 'apollo-server-koa'
-import { schema } from './gql'
+import 'reflect-metadata'
+import * as TypeGraphQL from 'type-graphql'
+import { resolvers } from './type-graphql/resolvers'
+import { context } from './type-graphql/dataloader'
 
 /**
  * Singleton class managing application lifecycle.
@@ -27,7 +30,13 @@ class Application {
         ]
       })
 
-      const gqlServer = new ApolloServer({ schema })
+      // Build TypeGraphQL executable schema
+      const schema = await TypeGraphQL.buildSchema({
+        resolvers: resolvers
+      })
+
+      // Set GraphQL middleware
+      const gqlServer = new ApolloServer({ schema, context })
       gqlServer.applyMiddleware({ app })
 
       this._server = app.listen(port)

@@ -7,7 +7,7 @@ import { ConfigService } from '../../services' // eslint-disable-line
 describe('Database', () => {
   test('should connect and disconnect as expected', async () => {
     const getConnection = jest.spyOn(typeorm, 'getConnection')
-    getConnection.mockImplementation(() => {
+    getConnection.mockImplementation((): any => {
       return {
         close: () => {}
       }
