@@ -82,6 +82,46 @@ create table `job_assessment` (
   constraint `pk_job_assessment` primary key (`id`)
 );
 
+create table `job_assessment_question` (
+  `id` bigint not null auto_increment,
+  `created_at` datetime not null default current_timestamp,
+  `updated_at` datetime not null default current_timestamp on update current_timestamp,
+  `type` enum('text', 'select', 'code'),
+  `locked` boolean not null default false,
+  `title` varchar(200) not null,
+  `content` text,
+  `data` json,
+  `state` enum('draft', 'pending_review', 'approved', 'rejected', 'published') not null default 'draft',
+
+  constraint `pk_job_assessment_question` primary key (`id`)
+);
+
+create table `job_assessment_question_review` (
+  `id` bigint not null auto_increment,
+  `created_at` datetime not null default current_timestamp,
+  `updated_at` datetime not null default current_timestamp on update current_timestamp,
+  `job_assessment_question_id` bigint not null,
+  `profile_id` bigint not null,
+  `state` enum('pending', 'in_progress', 'approved', 'rejected') not null default 'pending',
+
+  constraint `pk_job_assessment_question_review` primary key (`id`),
+  constraint `fk_job_assessment_question_review__job_assessment_question_id` foreign key (`job_assessment_question_id`) references `job_assessment_question` (`id`),
+  constraint `fk_job_assessment_question_review__profile_id` foreign key (`profile_id`) references `profile` (`id`)
+);
+
+create table `job_assessment_question_comment` (
+  `id` bigint not null auto_increment,
+  `created_at` datetime not null default current_timestamp,
+  `updated_at` datetime not null default current_timestamp on update current_timestamp,
+  `job_assessment_question_id` bigint not null,
+  `profile_id` bigint not null,
+  `content` text not null,
+
+  constraint `pk_job_assessment_question_comment` primary key (`id`),
+  constraint `fk_job_assessment_question_comment__job_assessment_question_id` foreign key (`job_assessment_question_id`) references `job_assessment_question` (`id`),
+  constraint `fk_job_assessment_question_comment__profile_id` foreign key (`profile_id`) references `profile` (`id`)
+);
+
 create table `job_assessment_section` (
   `id` bigint not null auto_increment,
   `created_at` datetime not null default current_timestamp,
@@ -94,19 +134,16 @@ create table `job_assessment_section` (
   constraint `fk_job_assessment_section__job_assessment_id` foreign key (`job_assessment_id`) references `job_assessment` (`id`)
 );
 
-create table `job_assessment_question` (
+create table `job_assessment_section_question` (
   `id` bigint not null auto_increment,
   `created_at` datetime not null default current_timestamp,
   `updated_at` datetime not null default current_timestamp on update current_timestamp,
   `job_assessment_section_id` bigint not null,
-  `type` enum('text', 'select', 'code'),
-  `required` boolean not null default false,
-  `title` varchar(200) not null,
-  `content` text,
-  `data` json,
+  `job_assessment_question_id` bigint not null,
 
-  constraint `pk_job_assessment_question` primary key (`id`),
-  constraint `fk_job_assessment_question__job_assessment_section_id` foreign key (`job_assessment_section_id`) references `job_assessment_section` (`id`)
+  constraint `pk_job_assessment_section_question` primary key (`id`),
+  constraint `fk_job_assessment_section_question__job_assessment_section_id` foreign key (`job_assessment_section_id`) references `job_assessment_section` (`id`),
+  constraint `fk_job_assessment_section_question__job_assessment_question_id` foreign key (`job_assessment_question_id`) references `job_assessment_question` (`id`)
 );
 
 create table `job_opening` (
@@ -120,10 +157,49 @@ create table `job_opening` (
   `title` varchar(200) not null,
   `content` text,
   `job_assessment_id` bigint,
+  `state` enum('draft', 'pending_review', 'approved', 'rejected', 'published') not null default 'draft',
 
   constraint `pk_job_opening` primary key (`id`),
   constraint `fk_job_opening__organization_role_id` foreign key (`organization_role_id`) references `organization_role` (`id`),
   constraint `fk_job_opening__job_assessment_id` foreign key (`job_assessment_id`) references `job_assessment` (`id`)
+);
+
+create table `job_opening_assessment` (
+  `id` bigint not null auto_increment,
+  `created_at` datetime not null default current_timestamp,
+  `updated_at` datetime not null default current_timestamp on update current_timestamp,
+  `job_opening_id` bigint not null,
+  `job_assessment_id` bigint not null,
+
+  constraint `pk_job_opening` primary key (`id`),
+  constraint `fk_job_opening_assessment__job_opening_id` foreign key (`job_opening_id`) references `job_opening` (`id`),
+  constraint `fk_job_opening_assessment__job_assessment_id` foreign key (`job_assessment_id`) references `job_assessment` (`id`)
+);
+
+create table `job_opening_review` (
+  `id` bigint not null auto_increment,
+  `created_at` datetime not null default current_timestamp,
+  `updated_at` datetime not null default current_timestamp on update current_timestamp,
+  `job_opening_id` bigint not null,
+  `profile_id` bigint not null,
+  `state` enum('pending', 'in_progress', 'approved', 'rejected') not null default 'pending',
+
+  constraint `pk_job_opening_review` primary key (`id`),
+  constraint `fk_job_opening_review__job_opening_id` foreign key (`job_opening_id`) references `job_opening` (`id`),
+  constraint `fk_job_opening_review__profile_id` foreign key (`profile_id`) references `profile` (`id`)
+);
+
+create table `job_opening_comment` (
+  `id` bigint not null auto_increment,
+  `created_at` datetime not null default current_timestamp,
+  `updated_at` datetime not null default current_timestamp on update current_timestamp,
+  `job_opening_id` bigint not null,
+  `profile_id` bigint not null,
+  `content` text not null,
+
+  constraint `pk_job_opening_comment` primary key (`id`),
+  constraint `fk_job_opening_comment__job_opening_id` foreign key (`job_opening_id`) references `job_opening` (`id`),
+  constraint `fk_job_opening_comment__profile_id` foreign key (`profile_id`) references `profile` (`id`)
 );
 
 create table `job_candidate` (
@@ -155,16 +231,17 @@ create table `job_candidate_assessment` (
   constraint `ux_job_candidate_assessment__token` unique index (`token`)
 );
 
-create table `job_candidate_reviewer` (
+create table `job_candidate_review` (
   `id` bigint not null auto_increment,
   `created_at` datetime not null default current_timestamp,
   `updated_at` datetime not null default current_timestamp on update current_timestamp,
   `job_candidate_id` bigint not null,
   `profile_id` bigint not null,
+  `state` enum('pending', 'in_progress', 'approved', 'rejected') not null default 'pending',
 
-  constraint `pk_job_candidate_reviewer` primary key (`id`),
-  constraint `fk_job_candidate_reviewer__job_candidate_id` foreign key (`job_candidate_id`) references `job_candidate` (`id`),
-  constraint `fk_job_candidate_reviewer__profile_id` foreign key (`profile_id`) references `profile` (`id`)
+  constraint `pk_job_candidate_review` primary key (`id`),
+  constraint `fk_job_candidate_review__job_candidate_id` foreign key (`job_candidate_id`) references `job_candidate` (`id`),
+  constraint `fk_job_candidate_review__profile_id` foreign key (`profile_id`) references `profile` (`id`)
 );
 
 create table `job_candidate_comment` (

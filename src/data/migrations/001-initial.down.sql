@@ -1,10 +1,15 @@
 drop table if exists `job_candidate_assessment`;
 drop table if exists `job_candidate_comment`;
-drop table if exists `job_candidate_reviewer`;
+drop table if exists `job_candidate_review`;
 drop table if exists `job_candidate`;
+drop table if exists `job_opening_comment`;
+drop table if exists `job_opening_review`;
 drop table if exists `job_opening`;
-drop table if exists `job_assessment_question`;
+drop table if exists `job_assessment_section_question`;
 drop table if exists `job_assessment_section`;
+drop table if exists `job_assessment_question_comment`;
+drop table if exists `job_assessment_question_review`;
+drop table if exists `job_assessment_question`;
 drop table if exists `job_assessment`;
 drop table if exists `profile_organization_role`;
 drop table if exists `profile`;
