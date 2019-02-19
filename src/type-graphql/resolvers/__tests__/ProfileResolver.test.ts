@@ -1,7 +1,7 @@
 import * as TypeGraphQL from 'type-graphql'
 import { resolvers } from '..'
 import { graphql } from 'graphql'
-import { createRepositoryMock, createProfile } from '../../../data/entities/__mocks__/'
+import { createRepositoryMock, createProfile } from '../../../data/entities/__mocks__'
 import { context } from '../../dataloader'
 
 describe('Profile - GraphQL Definitions and Resolvers', () => {
@@ -39,10 +39,10 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     const profileA = createProfile()
     const profileB = createProfile()
 
-    fake.data = { Profile: [profileA, profileB], Place: [profileA!.place, profileB!.place] }
+    fake.data = { Profile: [profileA, profileB], Place: [profileA.place, profileB.place] }
     const expected: any = [
-      { 'email': profileA.email, 'place': { 'name': profileA!.place!.name } },
-      { 'email': profileB.email, 'place': { 'name': profileB!.place!.name } }]
+      { 'email': profileA.email, 'place': { 'name': profileA.place.name } },
+      { 'email': profileB.email, 'place': { 'name': profileB.place.name } }]
     const gql = `
       query {
         profiles {
@@ -97,7 +97,7 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     let firstName = profile.firstName
     let lastName = profile.lastName
     let birthDate = profile.birthDate
-    let birthDateStr = birthDate!.toISOString()
+    let birthDateStr = birthDate.toISOString()
     let phone = profile.phone
     let address = profile.address
 
@@ -132,10 +132,10 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     let phone = profile.phone
     let address = profile.address
     let place = profile.place
-    let placeId = place!.id
+    let placeId = place.id
 
     fake.data = { Profile: [profile], Place: [profile.place] }
-    const expected: any = { 'id': profile.id, 'email': email, 'firstName': firstName, 'lastName': lastName, 'birthDate': birthDateStr, 'phone': phone, 'address': address, 'place': { 'id': placeId, 'name': place!.name, 'type': place!.type } }
+    const expected: any = { 'id': profile.id, 'email': email, 'firstName': firstName, 'lastName': lastName, 'birthDate': birthDateStr, 'phone': phone, 'address': address, 'place': { 'id': placeId, 'name': place.name, 'type': place.type } }
 
     const gql = `
       mutation {

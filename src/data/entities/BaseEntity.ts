@@ -10,5 +10,5 @@ import { Field, ObjectType, Int } from 'type-graphql'
 export abstract class BaseEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   @Field(type => Int)
-  id: number = 0
+  public id: number = 0
 }

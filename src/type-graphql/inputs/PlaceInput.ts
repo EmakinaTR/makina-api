@@ -5,8 +5,8 @@ import { PlaceEnum } from '../../data/enums' // eslint-disable-line no-unused-va
 @InputType()
 export class PlaceInput implements Partial<Place> {
   @Field(type => String, { nullable: true })
-  name?: string
+  public name?: string
 
   @Field(type => PlaceEnum, { nullable: true })
-  type?: PlaceEnum
+  public type?: PlaceEnum
 }

@@ -10,50 +10,52 @@ import _ from 'lodash'
 @Controller('/profile')
 export class ProfileController {
   private static instance: ProfileController
-  static getInstance () {
+  public static getInstance (): ProfileController {
     if (!ProfileController.instance) {
       ProfileController.instance = new ProfileController()
     }
     return ProfileController.instance
   }
 
-  repository = getRepository(Profile)
+  private repository = getRepository(Profile)
 
-  async create (input: any) {
+  public async create (input: any) {
     input = _.merge({}, input)
     const profile = this.repository.merge(new Profile(), input)
     return this.post(profile)
   }
 
-  async update (id: number, input: any) {
+  public async update (id: number, input: any) {
     input = _.merge({}, input)
     await this.repository.update(id, input)
     return this.getOne(id)
   }
 
   @Get()
-  getAll (@QueryParam('limit') limit: number | undefined,
-          @QueryParam('offset') offset: number | undefined) {
+  public getAll (
+    @QueryParam('limit') limit: number | undefined,
+    @QueryParam('offset') offset: number | undefined
+  ) {
     return this.repository.find({ take: limit, skip: offset })
   }
 
   @Get('/:id')
-  getOne (@Param('id') id: number) {
+  public getOne (@Param('id') id: number) {
     return this.repository.findOne({ where: { 'id': id } })
   }
 
   @Post()
-  async post (@Body() profile: Profile) {
+  public async post (@Body() profile: Profile) {
     return this.repository.save(profile)
   }
 
   @Put('/:id')
-  put (@Param('id') id: number, @Body() profile: Profile) {
+  public put (@Param('id') id: number, @Body() profile: Profile) {
     return this.repository.save(profile)
   }
 
   @Delete('/:id')
-  remove (@Param('id') id: number) {
+  public remove (@Param('id') id: number) {
     return this.repository.delete(id)
   }
 }
