@@ -13,9 +13,10 @@ script:
   - npm run lint
   - npm run build
   - npm test
+after_success:
   # Coverage
-  - npm install coveralls --no-save
-  - coveralls < ./coverage/lcov.info
+  - npm install codecov --no-save
+  - codecov
   # Deploy
   - |
     if [[ $TRAVIS_PULL_REQUEST == "false" && ($TRAVIS_BRANCH == "master" || $TRAVIS_BRANCH == "develop") ]]; then
