@@ -39,6 +39,15 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
     const profileA = createProfile()
     const profileB = createProfile()
 
+    expect(profileA).not.toBeNull()
+    expect(profileB).not.toBeNull()
+    expect(profileA.place).not.toBeNull()
+    expect(profileB.place).not.toBeNull()
+
+    if (profileA.place === null || profileB.place === null) {
+      throw new Error()
+    }
+
     fake.data = { Profile: [profileA, profileB], Place: [profileA.place, profileB.place] }
     const expected: any = [
       { 'email': profileA.email, 'place': { 'name': profileA.place.name } },
@@ -93,6 +102,11 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
 
   it('should create a profile.', async () => {
     const profile = createProfile()
+
+    if (profile === null || profile.birthDate === null) {
+      throw new Error()
+    }
+
     let email = profile.email
     let firstName = profile.firstName
     let lastName = profile.lastName
@@ -124,6 +138,11 @@ describe('Profile - GraphQL Definitions and Resolvers', () => {
 
   it('should create a profile with place.', async () => {
     const profile = createProfile()
+
+    if (profile === null || profile.birthDate === null || profile.place === null) {
+      throw new Error()
+    }
+
     let email = profile.email
     let firstName = profile.firstName
     let lastName = profile.lastName

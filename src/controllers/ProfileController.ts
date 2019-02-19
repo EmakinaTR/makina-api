@@ -17,7 +17,7 @@ export class ProfileController {
     return ProfileController.instance
   }
 
-  private repository = getRepository(Profile)
+  public repository = getRepository(Profile)
 
   public async create (input: any) {
     input = _.merge({}, input)

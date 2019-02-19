@@ -17,7 +17,7 @@ export class PlaceController {
     return PlaceController.instance
   }
 
-  private repository = getRepository(Place)
+  public repository = getRepository(Place)
 
   public async create (input: any) {
     input = _.merge({}, input)
