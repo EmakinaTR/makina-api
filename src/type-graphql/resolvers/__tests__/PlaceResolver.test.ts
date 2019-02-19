@@ -1,7 +1,7 @@
 import * as TypeGraphQL from 'type-graphql'
 import { resolvers } from '..'
 import { graphql } from 'graphql'
-import { createRepositoryMock, createPlace } from '../../../data/entities/__mocks__/'
+import { createRepositoryMock, createPlace } from '../../../data/entities/__mocks__'
 import { context } from '../../dataloader'
 
 describe('Place - GraphQL Definitions and Resolvers', () => {

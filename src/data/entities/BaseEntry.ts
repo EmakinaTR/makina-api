@@ -12,8 +12,8 @@ import { ObjectType } from 'type-graphql'
 @ObjectType()
 export abstract class BaseEntry extends BaseEntity {
   @CreateDateColumn({ readonly: true })
-  createdAt: Date | null = null
+  public createdAt: Date | null = null
 
   @CreateDateColumn({ readonly: true })
-  updatedAt: Date | null = null
+  public updatedAt: Date | null = null
 }

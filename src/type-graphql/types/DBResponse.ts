@@ -3,23 +3,23 @@ import { Field, ObjectType, Int } from 'type-graphql'
 @ObjectType()
 export class DBResponseRaw {
   @Field(type => Int, { nullable: true })
-  fieldCount?: number
+  public fieldCount?: number
 
   @Field(type => Int, { nullable: true })
-  affectedRows?: number
+  public affectedRows?: number
 
   @Field(type => String, { nullable: true })
-  insert?: string
+  public insert?: string
 
   @Field(type => Int, { nullable: true })
-  serverStatus?: number
+  public serverStatus?: number
 
   @Field(type => Int, { nullable: true })
-  warningStatus?: number
+  public warningStatus?: number
 }
 
 @ObjectType()
 export class DBResponse {
   @Field(type => DBResponseRaw, { nullable: true })
-  raw?: DBResponseRaw
+  public raw?: DBResponseRaw
 }
