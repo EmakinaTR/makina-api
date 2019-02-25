@@ -12,32 +12,32 @@ import { Field, ObjectType } from 'type-graphql'
 export class Profile extends BaseEntry {
   @Column({ type: 'varchar' })
   @Field(type => String, { nullable: true })
-  email: string | null = null
+  public email: string | null = null
 
   @Column({ type: 'varchar' })
   @Field(type => String, { nullable: true })
-  firstName: string | null = null
+  public firstName: string | null = null
 
   @Column({ type: 'varchar' })
   @Field(type => String, { nullable: true })
-  lastName: string | null = null
+  public lastName: string | null = null
 
   @Column({ type: 'varchar' })
   @Field(type => Date, { nullable: true })
-  birthDate: Date | null = null
+  public birthDate: Date | null = null
 
   @Column({ type: 'varchar' })
   @Field(type => String, { nullable: true })
-  address: string | null = null
+  public address: string | null = null
 
   @Column({ type: 'varchar' })
   @Field(type => String, { nullable: true })
-  phone: string | null = null
+  public phone: string | null = null
 
   @Column({ type: 'bigint' })
-  placeId: number | null = null
+  public placeId: number | null = null
 
   @ManyToOne(type => Place)
   @Field(type => Place, { nullable: true })
-  place: Place | null = null
+  public place: Place | null = null
 }

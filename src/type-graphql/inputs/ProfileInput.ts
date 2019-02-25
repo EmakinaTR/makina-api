@@ -5,23 +5,23 @@ import { RelationIdInput } from './RelationIdInput'
 @InputType()
 export class ProfileInput implements Partial<Profile> {
   @Field(type => String, { nullable: true })
-  email?: string
+  public email?: string
 
   @Field(type => String, { nullable: true })
-  firstName?: string
+  public firstName?: string
 
   @Field(type => String, { nullable: true })
-  lastName?: string
+  public lastName?: string
 
   @Field(type => Date, { nullable: true })
-  birthDate?: Date
+  public birthDate?: Date
 
   @Field(type => String, { nullable: true })
-  address?: string
+  public address?: string
 
   @Field(type => String, { nullable: true })
-  phone?: string
+  public phone?: string
 
   @Field(type => RelationIdInput, { nullable: true })
-  place?: any
+  public place?: any
 }

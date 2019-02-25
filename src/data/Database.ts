@@ -19,7 +19,7 @@ class Database {
   /**
    * Connects to configured database.
    */
-  async connect (): Promise<void> {
+  public async connect (): Promise<void> {
     const config = ConfigService.get('database')
     const options: MysqlConnectionOptions = {
       type: 'mysql',
@@ -60,7 +60,7 @@ class Database {
   /**
    * Disconnects from configured database if there is an active connection.
    */
-  async disconnect (): Promise<void> {
+  public async disconnect (): Promise<void> {
     const connection = getConnection()
     if (!connection) {
       return
@@ -68,7 +68,7 @@ class Database {
     await connection.close()
   }
 
-  isConnected (): boolean {
+  public isConnected (): boolean {
     return this._connected
   }
 }

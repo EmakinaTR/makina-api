@@ -10,11 +10,11 @@ import { snakeCase } from 'typeorm/util/StringUtils'
  */
 export class NamingStrategy extends DefaultNamingStrategy
   implements NamingStrategyInterface {
-  tableName (className: string, customName: string): string {
+  public tableName (className: string, customName: string): string {
     return customName || snakeCase(className)
   }
 
-  columnName (
+  public columnName (
     propertyName: string,
     customName: string,
     embeddedPrefixes: string[]
@@ -25,15 +25,15 @@ export class NamingStrategy extends DefaultNamingStrategy
     )
   }
 
-  relationName (propertyName: string): string {
+  public relationName (propertyName: string): string {
     return snakeCase(propertyName)
   }
 
-  joinColumnName (relationName: string, referencedColumnName: string): string {
+  public joinColumnName (relationName: string, referencedColumnName: string): string {
     return snakeCase(relationName + '_' + referencedColumnName)
   }
 
-  joinTableName (
+  public joinTableName (
     firstTableName: string,
     secondTableName: string,
     firstPropertyName: string,
@@ -48,7 +48,7 @@ export class NamingStrategy extends DefaultNamingStrategy
     )
   }
 
-  joinTableColumnName (
+  public joinTableColumnName (
     tableName: string,
     propertyName: string,
     columnName?: string
@@ -58,7 +58,7 @@ export class NamingStrategy extends DefaultNamingStrategy
     )
   }
 
-  classTableInheritanceParentColumnName (
+  public classTableInheritanceParentColumnName (
     parentTableName: any,
     parentTableIdPropertyName: any
   ): string {

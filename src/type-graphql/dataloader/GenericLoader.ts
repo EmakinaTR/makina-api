@@ -1,6 +1,6 @@
 import { In, Repository } from 'typeorm' // eslint-disable-line no-unused-vars
 
-export const batch = async (keys: {}[], repository: Repository<any>) => {
+export const batch = async (keys: {}[], repository: Repository<any>): Promise<any> => {
   const results = await repository.find({
     where: {
       id: keys.length > 1 ? In(keys) : keys[0]

@@ -1,4 +1,4 @@
-import { PlaceResolver } from './PlaceResolvers'
-import { ProfileResolver } from './ProfileResolvers'
+import { PlaceResolver } from './PlaceResolver'
+import { ProfileResolver } from './ProfileResolver'
 
 export const resolvers = [PlaceResolver, ProfileResolver]

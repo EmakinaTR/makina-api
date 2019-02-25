@@ -18,7 +18,7 @@ class Application {
   /**
    * Starts the application.
    */
-  async start (): Promise<void> {
+  public async start (): Promise<void> {
     try {
       dotenv.config()
       await Database.connect()
@@ -48,7 +48,7 @@ class Application {
   /**
    * Stops the application.
    */
-  async stop (): Promise<void> {
+  public async stop (): Promise<void> {
     try {
       await Database.disconnect()
       this._server.close()
@@ -60,7 +60,7 @@ class Application {
   /**
    * Returns http server.
    */
-  getServer () {
+  public getServer (): any {
     return this._server
   }
 }
